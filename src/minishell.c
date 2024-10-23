@@ -3,29 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: trgaspar <trgaspar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:55:33 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/22 16:10:20 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:32:04 by trgaspar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
-int main(void) 
+int	main(void)
 {
-    char *input;
+	char	*input;
 
-    while (1) 
-    {
-        input = readline("minishell$ ");
-
-        if (input && *input) 
-        {
-            add_history(input);
-        }
-
-        free(input);
-    }
-    return 0;
+	while (1)
+	{
+		input = readline("minishell$ ");
+		if (input && *input)
+		{
+			add_history(input);
+		}
+		free(input);
+	}
+	return (0);
 }

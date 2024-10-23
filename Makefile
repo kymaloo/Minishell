@@ -1,40 +1,42 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/17 15:29:02 by aafounas          #+#    #+#              #
-#    Updated: 2024/09/17 17:14:48 by aafounas         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME	:= minishell
 
-NAME = minishell
-SRCS = minishell.c
-OBJS = ${SRCS:.c=.o}
+CFLAGS	:= -Wextra -Wall -Werror -g3
+LDFLAGS	:= -lreadline
 
-CC = cc
-CFLAGS = -g3 -Wall -Werror -Wextra
-RM = rm -f
+HEADERS	:= -Iinclude
 
-all: ${NAME}
+SRCS	:= 	src/minishell.c \
 
-${NAME}: ${OBJS}
-		@echo "\033[33m----Compiling ${NAME}---"
-		${CC} ${CFLAGS} ${OBJS} -o ${NAME
-		@echo "\033[32m${NAME} Compiled!\033[0m"
+OBJS	:= ${SRCS:.c=.o}
+
+LIBFT	:= ./libft
+LIBFT_EXE := ./libft/libft.a
+
+all: $(NAME)
+
+n:
+	norminette src/ include/
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+
+$(NAME): $(OBJS)
+	@echo "\033[33m----Compiling ${NAME}---"
+	@$(MAKE) -C $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_EXE) $(LDFLAGS) $(HEADERS) -o $(NAME)
+	@echo "\033[32m${NAME} Compiled!\033[0m"
+	
 
 clean:
-		@echo "\033[31m----Cleaning object files----\033[0m"
-		make -C clean
-		${RM} ${OBJS}
+	@echo "\033[31m----Cleaning object files----\033[0m"
+	@rm -rf $(OBJS)
+	@$(MAKE) clean -C  $(LIBFT)
 
 fclean: clean
-		@echo "\033[31m----Claning all generated files----\033[0m"
-		make -C ${LIBFT_DIR} fclean
-		${RM} ${NAME}
+	@echo "\033[31m----Cleaning all generated files----\033[0m"
+	@rm -rf $(NAME)
+	@$(MAKE) fclean -C  $(LIBFT)
 
-re:	fclean all
+re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all, clean, fclean, re
