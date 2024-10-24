@@ -6,6 +6,7 @@ LDFLAGS	:= -lreadline
 HEADERS	:= -Iinclude
 
 SRCS	:= 	src/minishell.c \
+			src/builtins.c  \
 
 OBJS	:= ${SRCS:.c=.o}
 
