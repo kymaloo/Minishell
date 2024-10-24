@@ -6,7 +6,7 @@
 #    By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:29:02 by aafounas          #+#    #+#              #
-#    Updated: 2024/09/17 17:14:48 by aafounas         ###   ########.fr        #
+#    Updated: 2024/10/24 15:59:39 by aafounas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ clean:
 		${RM} ${OBJS}
 
 fclean: clean
-		@echo "\033[31m----Claning all generated files----\033[0m"
+		@echo "\033[31m----Cleaning all generated files----\033[0m"
 		make -C ${LIBFT_DIR} fclean
 		${RM} ${NAME}
 

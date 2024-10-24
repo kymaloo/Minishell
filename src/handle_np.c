@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   handle_np.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/24 15:32:54 by aafounas         ###   ########.fr       */
+/*   Created: 2024/10/24 16:08:12 by aafounas          #+#    #+#             */
+/*   Updated: 2024/10/24 16:14:55 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/minishell.h"
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+void	print_command_info(t_command_node *node)
+{
+	int	i;
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
-typedef struct s_command_node {
-    char *command;
-    char **args;
-    int arg_count;
-} t_command_node;
-
-#endif
+	i = 0;
+	printf("Command: %s\n", node->command);
+	printf("Arguments:\n");
+	while (i < node->arg_count)
+	{
+		printf("[%d]: %s\n", i, node->args[i]);
+		i++;
+	}
+}
