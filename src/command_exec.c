@@ -154,11 +154,11 @@ void handle_redirection(char **cmd, int *stdin_backup, int *stdout_backup)
     i = 0;
     while (cmd[i]) 
 	{
-        if (strcmp(cmd[i], ">") == 0 && cmd[i + 1]) 
+        if (ft_strcmp(cmd[i], ">") == 0 && cmd[i + 1]) 
 		{
             handle_output_redirection(cmd, stdout_backup, i);
             break;
-        } else if (strcmp(cmd[i], "<") == 0 && cmd[i + 1]) 
+        } else if (ft_strcmp(cmd[i], "<") == 0 && cmd[i + 1]) 
 		{
             handle_input_redirection(cmd, stdin_backup, i);
             break;
