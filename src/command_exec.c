@@ -120,7 +120,8 @@ void handle_output_redirection(char **cmd, int *stdout_backup, int i)
     int fd;
 
     fd = open(cmd[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (fd == -1) {
+    if (fd == -1) 
+	{
         perror("open");
         return;
     }
@@ -135,7 +136,8 @@ void handle_input_redirection(char **cmd, int *stdin_backup, int i)
     int fd;
 
     fd = open(cmd[i + 1], O_RDONLY);
-    if (fd == -1) {
+    if (fd == -1) 
+	{
         perror("open");
         return;
     }
@@ -150,11 +152,14 @@ void handle_redirection(char **cmd, int *stdin_backup, int *stdout_backup)
     int i;
 
     i = 0;
-    while (cmd[i]) {
-        if (strcmp(cmd[i], ">") == 0 && cmd[i + 1]) {
+    while (cmd[i]) 
+	{
+        if (strcmp(cmd[i], ">") == 0 && cmd[i + 1]) 
+		{
             handle_output_redirection(cmd, stdout_backup, i);
             break;
-        } else if (strcmp(cmd[i], "<") == 0 && cmd[i + 1]) {
+        } else if (strcmp(cmd[i], "<") == 0 && cmd[i + 1]) 
+		{
             handle_input_redirection(cmd, stdin_backup, i);
             break;
         }
