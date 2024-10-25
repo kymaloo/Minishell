@@ -6,7 +6,7 @@
 /*   By: trgaspar <trgaspar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/25 17:28:43 by trgaspar         ###   ########.fr       */
+/*   Updated: 2024/10/25 21:03:46 by trgaspar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -29,7 +30,8 @@ typedef enum e_ptoken
 	QUOTE = 5,
 	DOUBLE_QUOTE = 6,
 	DASH = 7,
-	DOLLAR = 8
+	DOLLAR = 8,
+	ANTI_SLASH = 9
 }			t_ptoken;
 
 typedef struct s_pretoken
@@ -41,6 +43,8 @@ typedef struct s_pretoken
 int		exit_prog(char *input);
 int		token_for_symbol(char input);
 void	stock_char_lst(t_list **lst, t_pretoken *pretoken, char *input);
-void	*print_lst(t_pretoken *pretoken);
+void	print_lst(t_list *lst);
+void	delete_lst(t_list *lst);
+void	del(void *content);
 
 #endif
