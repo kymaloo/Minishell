@@ -6,7 +6,7 @@
 /*   By: trgaspar <trgaspar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/24 18:50:00 by trgaspar         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:28:43 by trgaspar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-typedef enum e_pretoken
+typedef enum e_ptoken
 {
 	CHAR = 0,
 	PIPE = 1,
@@ -30,15 +30,17 @@ typedef enum e_pretoken
 	DOUBLE_QUOTE = 6,
 	DASH = 7,
 	DOLLAR = 8
-}			t_pretoken;
+}			t_ptoken;
 
-typedef struct s_ptoken
+typedef struct s_pretoken
 {
 	char			character;
-	int				pretoken;
-	struct s_ptoken	*next;
-}	t_ptoken;
+	int				token;
+}	t_pretoken;
 
-int	exit_prog(char *input);
+int		exit_prog(char *input);
+int		token_for_symbol(char input);
+void	stock_char_lst(t_list **lst, t_pretoken *pretoken, char *input);
+void	*print_lst(t_pretoken *pretoken);
 
 #endif
