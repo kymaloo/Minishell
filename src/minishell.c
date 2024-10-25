@@ -12,20 +12,43 @@
 
 #include "../include/minishell.h"
 
-int main(void) 
+void	run_command(char *input, char **envp)
 {
-    char *input;
+	char	**cmd;
+	int		i;
 
-    while (1) 
-    {
-        input = readline("minishell$ ");
+	i = 0;
+	cmd = ft_split(input, ' ');
+	if (!cmd || !cmd[0])
+	{
+		if (cmd)
+			free_array(cmd);
+		return ;
+	}
+	execute(input, envp);
+	while (cmd[i])
+	{
+		free(cmd[i]);
+		i++;
+	}
+	free(cmd);
+}
 
-        if (input && *input) 
-        {
-            add_history(input);
-        }
+int	main(int argc, char **argv, char **envp)
+{
+	char	*input;
 
-        free(input);
-    }
-    return 0;
+	(void)argc;
+	(void)argv;
+	while (1)
+	{
+		input = readline("minishell$ ");
+		if (input && *input)
+		{
+			add_history(input);
+			run_command(input, envp);
+		}
+		free(input);
+	}
+	return (0);
 }
