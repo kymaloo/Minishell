@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/libft.h"
@@ -38,6 +39,9 @@ void handle_output_redirection(char **cmd, int *stdout_backup, int i);
 void handle_input_redirection(char **cmd, int *stdin_backup, int i);
 void handle_redirection(char **cmd, int *stdin_backup, int *stdout_backup);
 void restore_redirection(int stdin_backup, int stdout_backup);
+void run_child_process(char *path, char **cmd, char **envp);
+void handle_parent_process(pid_t pid);
+void prepare_command_execution(char **cmd, char **envp);
 void execute(char *argv, char **envp);
 
 

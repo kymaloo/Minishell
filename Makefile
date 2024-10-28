@@ -36,7 +36,7 @@ $(NAME): $(OBJS)
 	@echo "\033[33m----Compiling ${NAME}---"
 	@$(MAKE) -C $(LIBFT)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_EXE) $(LDFLAGS) $(HEADERS) -o $(NAME)
-	@echo "\033[32m${NAME} Compiled!\033[0m"
+	@echo "\033[32m----${NAME} Compiled!----\033[0m"
 	
 
 clean:

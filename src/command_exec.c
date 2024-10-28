@@ -182,26 +182,52 @@ void restore_redirection(int stdin_backup, int stdout_backup)
     }
 }
 
+void run_child_process(char *path, char **cmd, char **envp)
+{
+    if (!path || execve(path, cmd, envp) == -1)
+    {
+        perror("execution failed");
+        free_array(cmd);
+        exit(1);
+    }
+}
+
+void handle_parent_process(pid_t pid)
+{
+    waitpid(pid, NULL, 0);
+}
+
+void prepare_command_execution(char **cmd, char **envp)
+{
+    char *path;
+    pid_t pid;
+
+    path = find_path(cmd[0], envp);
+    pid = fork();
+    if (pid == -1)
+        perror("fork failed");
+    else if (pid == 0)
+        run_child_process(path, cmd, envp);
+    else
+        handle_parent_process(pid);
+}
+
 void execute(char *argv, char **envp)
 {
     char **cmd;
     int stdin_backup;
     int stdout_backup;
-    char *path;
 
     stdin_backup = -1;
     stdout_backup = -1;
     cmd = ft_split(argv, ' ');
-    if (!cmd)
-        error("split failed");
-    handle_redirection(cmd, &stdin_backup, &stdout_backup);
-    path = find_path(cmd[0], envp);
-    if (!path || execve(path, cmd, envp) == -1) 
-	{
-        free_array(cmd);
-        restore_redirection(stdin_backup, stdout_backup);
-        error("execution failed");
+    if (!cmd) 
+    {
+        perror("split failed");
+        return;
     }
+    handle_redirection(cmd, &stdin_backup, &stdout_backup);
+    prepare_command_execution(cmd, envp);
     free_array(cmd);
     restore_redirection(stdin_backup, stdout_backup);
 }
