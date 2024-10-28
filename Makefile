@@ -6,35 +6,49 @@
 #    By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:29:02 by aafounas          #+#    #+#              #
-#    Updated: 2024/10/24 15:59:39 by aafounas         ###   ########.fr        #
+#    Updated: 2024/10/28 15:18:28 by aafounas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-SRCS = minishell.c
-OBJS = ${SRCS:.c=.o}
+NAME	:= minishell
 
-CC = cc
-CFLAGS = -g3 -Wall -Werror -Wextra
-RM = rm -f
+CFLAGS	:= -Wextra -Wall -Werror -g3
+LDFLAGS	:= -lreadline
 
-all: ${NAME}
+HEADERS	:= -Iinclude
 
-${NAME}: ${OBJS}
-		@echo "\033[33m----Compiling ${NAME}---"
-		${CC} ${CFLAGS} ${OBJS} -o ${NAME
-		@echo "\033[32m${NAME} Compiled!\033[0m"
+SRCS	:= 	src/minishell.c src/command_exec.c\
+
+OBJS	:= ${SRCS:.c=.o}
+
+LIBFT	:= ./libft
+LIBFT_EXE := ./libft/libft.a
+
+all: $(NAME)
+
+n:
+	norminette src/ include/
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+
+$(NAME): $(OBJS)
+	@echo "\033[33m----Compiling ${NAME}---"
+	@$(MAKE) -C $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_EXE) $(LDFLAGS) $(HEADERS) -o $(NAME)
+	@echo "\033[32m${NAME} Compiled!\033[0m"
+	
 
 clean:
-		@echo "\033[31m----Cleaning object files----\033[0m"
-		make -C clean
-		${RM} ${OBJS}
+	@echo "\033[31m----Cleaning object files----\033[0m"
+	@rm -rf $(OBJS)
+	@$(MAKE) clean -C  $(LIBFT)
 
 fclean: clean
-		@echo "\033[31m----Cleaning all generated files----\033[0m"
-		make -C ${LIBFT_DIR} fclean
-		${RM} ${NAME}
+	@echo "\033[31m----Cleaning all generated files----\033[0m"
+	@rm -rf $(NAME)
+	@$(MAKE) fclean -C  $(LIBFT)
 
-re:	fclean all
+re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all, clean, fclean, re

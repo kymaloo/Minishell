@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_np.c                                        :+:      :+:    :+:   */
+/*   command_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 16:08:12 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/24 16:14:55 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:13:54 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	error(char *msg)
 	exit(EXIT_FAILURE);
 }
 
-void	execute(char *argv, char **envp)
+void	execute_basic(char *argv, char **envp)
 {
 	char	**cmd;
 	int		i;
@@ -115,7 +115,7 @@ void	execute(char *argv, char **envp)
 	}
 }
 
-void handle_output_redirection(char **cmd, int *stdout_backup, int i) 
+void handle_output_redirection(char **cmd, int *stdout_backup, int i)
 {
     int fd;
 
@@ -131,7 +131,7 @@ void handle_output_redirection(char **cmd, int *stdout_backup, int i)
     cmd[i] = NULL;
 }
 
-void handle_input_redirection(char **cmd, int *stdin_backup, int i) 
+void handle_input_redirection(char **cmd, int *stdin_backup, int i)
 {
     int fd;
 
@@ -147,18 +147,19 @@ void handle_input_redirection(char **cmd, int *stdin_backup, int i)
     cmd[i] = NULL;
 }
 
-void handle_redirection(char **cmd, int *stdin_backup, int *stdout_backup) 
+void handle_redirection(char **cmd, int *stdin_backup, int *stdout_backup)
 {
     int i;
 
     i = 0;
     while (cmd[i]) 
 	{
-        if (ft_strcmp(cmd[i], ">") == 0 && cmd[i + 1]) 
+        if (ft_strncmp(cmd[i], ">", 2) == 0 && cmd[i + 1]) 
 		{
             handle_output_redirection(cmd, stdout_backup, i);
             break;
-        } else if (ft_strcmp(cmd[i], "<") == 0 && cmd[i + 1]) 
+        }
+		else if (ft_strncmp(cmd[i], "<", 2) == 0 && cmd[i + 1]) 
 		{
             handle_input_redirection(cmd, stdin_backup, i);
             break;
@@ -167,7 +168,7 @@ void handle_redirection(char **cmd, int *stdin_backup, int *stdout_backup)
     }
 }
 
-void restore_redirection(int stdin_backup, int stdout_backup) 
+void restore_redirection(int stdin_backup, int stdout_backup)
 {
     if (stdin_backup != -1) 
 	{
@@ -181,7 +182,7 @@ void restore_redirection(int stdin_backup, int stdout_backup)
     }
 }
 
-void execute(char *argv, char **envp) 
+void execute(char *argv, char **envp)
 {
     char **cmd;
     int stdin_backup;

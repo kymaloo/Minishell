@@ -6,7 +6,7 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:55:33 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/22 16:10:20 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:32:00 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ void	run_command(char *input, char **envp)
 		if (cmd)
 			free_array(cmd);
 		return ;
+	}
+	if (ft_strncmp(cmd[0], "exit", 5) == 0)
+	{
+		free_array(cmd);
+		free(input);
+		printf("exit\n");
+		exit(0);
 	}
 	execute(input, envp);
 	while (cmd[i])
