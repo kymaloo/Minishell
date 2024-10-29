@@ -24,14 +24,12 @@ typedef enum e_ptoken
 {
 	CHAR = 0,
 	PIPE = 1,
-	SPACES = 2,
-	REDIRECTION_LEFT = 3,
-	REDIRECTION_RIGHT = 4,
-	QUOTE = 5,
-	DOUBLE_QUOTE = 6,
-	DASH = 7,
-	DOLLAR = 8,
-	ANTI_SLASH = 9
+	REDIRECTION_LEFT = 2,
+	REDIRECTION_RIGHT = 3,
+	QUOTE = 4,
+	DOUBLE_QUOTE = 5,
+	DOLLAR = 6,
+	WHITE_SPACE = 7
 }			t_ptoken;
 
 typedef struct s_pretoken
