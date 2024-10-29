@@ -6,7 +6,7 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/28 15:08:37 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:53:38 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,19 @@
 #include "../libft/libft.h"
 
 typedef struct s_command_node {
-    char *command;
+    char *cmd;
     char **args;
     int arg_count;
 } t_command_node;
+
+typedef struct s_ast_node {
+    char *cmd;
+    char **args;
+    struct s_ast_node *left;
+    struct s_ast_node *right;
+    int is_pipe;
+    int is_redirection;
+} t_ast_node;
 
 void	print_command_info(t_command_node *node);
 char	*get_path_from_env(char **envp);

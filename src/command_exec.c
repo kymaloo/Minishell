@@ -6,7 +6,7 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 16:08:12 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/28 15:13:54 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:51:53 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_command_info(t_command_node *node)
 	int	i;
 
 	i = 0;
-	printf("Command: %s\n", node->command);
+	printf("Command: %s\n", node->cmd);
 	printf("Arguments:\n");
 	while (i < node->arg_count)
 	{
