@@ -39,8 +39,6 @@ int	token_for_symbol(char input)
 	token = 0;
 	if (input == '|')
 		token = PIPE;
-	else if (input == ' ')
-		token = SPACES;
 	else if (input == '<')
 		token = REDIRECTION_LEFT;
 	else if (input == '>')
@@ -49,12 +47,10 @@ int	token_for_symbol(char input)
 		token = QUOTE;
 	else if (input == '"')
 		token = DOUBLE_QUOTE;
-	else if (input == '-')
-		token = DASH;
 	else if (input == '$')
 		token = DOLLAR;
-	else if (input == '\\')
-		token = ANTI_SLASH;
+	else if (input == 32 || (input >= 9 && input <= 13))
+		token = WHITE_SPACE;
 	else
 		token = CHAR;
 	return (token);
