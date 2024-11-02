@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.c                                              :+:      :+:    :+:   */
+/*   command_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 16:23:34 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/30 14:32:54 by aafounas         ###   ########.fr       */
+/*   Created: 2024/10/24 16:08:12 by aafounas          #+#    #+#             */
+/*   Updated: 2024/11/02 17:13:43 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-t_ast_node  *create_ast_node(char *cmd, char **args)
-{
-    t_ast_node  *node;
+#include "../include/minishell.h"
 
-    node = malloc(sizeof(t_ast_node));
-    if (!node)
-        return (NULL);
-    node->cmd = cmd;
-    node->args = args;
-    node->left = NULL;
-    node->right = NULL;
-    node->is_pipe = 0;
-    node->is_redirection = 0;
-    return (node);
+void	print_command_info(t_command_node *node)
+{
+	int	i;
+
+	i = 0;
+	printf("Command: %s\n", node->cmd);
+	printf("Arguments:\n");
+	while (i < node->arg_count)
+	{
+		printf("[%d]: %s\n", i, node->args[i]);
+		i++;
+	}
 }

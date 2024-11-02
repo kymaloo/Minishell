@@ -6,7 +6,7 @@
 #    By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:29:02 by aafounas          #+#    #+#              #
-#    Updated: 2024/10/28 15:18:28 by aafounas         ###   ########.fr        #
+#    Updated: 2024/11/02 17:15:54 by aafounas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LDFLAGS	:= -lreadline
 
 HEADERS	:= -Iinclude
 
-SRCS	:= 	src/minishell.c src/command_exec.c\
+SRCS	:= 	src/minishell.c src/command_info.c src/execute_utils.c src/path_utils.c src/process_utils.c src/redirection_utils.c\
 
 OBJS	:= ${SRCS:.c=.o}
 
