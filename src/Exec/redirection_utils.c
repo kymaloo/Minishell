@@ -6,11 +6,11 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:09:42 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/02 17:13:25 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:46:54 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void handle_output_redirection(char **cmd, int *stdout_backup, int i)
 {

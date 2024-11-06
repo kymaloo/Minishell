@@ -6,7 +6,7 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/10/29 17:53:38 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/06 18:11:54 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_ast_node {
     int is_redirection;
 } t_ast_node;
 
+/*///////////////////////EXEC////////////////////*/
 void	print_command_info(t_command_node *node);
 char	*get_path_from_env(char **envp);
 char	*find_command_path(char *cmd, char *path_str);
@@ -52,6 +53,18 @@ void run_child_process(char *path, char **cmd, char **envp);
 void handle_parent_process(pid_t pid);
 void prepare_command_execution(char **cmd, char **envp);
 void execute(char *argv, char **envp);
+/*//////////////////////BUILTIN//////////////////*/
+int builtin_cd(char **args, char **envp);
+int builtin_echo(char **args);
+void update_env(char *name, char *value, char **envp);
+int is_builtin(char *cmd);
+int execute_builtin(char **args, char **envp);
+int builtin_exit(char **args);
+int builtin_pwd(void);
+/*/////////////////////AST///////////////////////*/
+t_ast_node  *create_ast_node(char *cmd, char **args);
+void execute_command(t_ast_node *node, char **envp);
+void execute_ast(t_ast_node *node, char **envp);
 
 
 #endif

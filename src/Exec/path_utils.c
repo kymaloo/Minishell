@@ -6,11 +6,11 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:08:33 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/02 17:13:17 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:46:43 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 char	*get_path_from_env(char **envp)
 {

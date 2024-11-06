@@ -6,11 +6,11 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:10:41 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/02 17:13:21 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:46:48 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void run_child_process(char *path, char **cmd, char **envp)
 {

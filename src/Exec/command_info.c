@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_exec.c                                     :+:      :+:    :+:   */
+/*   command_info.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 16:08:12 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/02 17:13:43 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:46:32 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	print_command_info(t_command_node *node)
 {

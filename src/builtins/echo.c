@@ -1,38 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/02 17:33:09 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/02 17:44:26 by aafounas         ###   ########.fr       */
+/*   Created: 2024/11/04 16:11:35 by aafounas          #+#    #+#             */
+/*   Updated: 2024/11/04 16:12:08 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int is_builtin(char *cmd)
-{
-    return (strcmp(cmd, "cd") == 0 || strcmp(cmd, "echo") == 0 ||
-            strcmp(cmd, "exit") == 0 || strcmp(cmd, "pwd") == 0);
-}
-int execute_builtin(char **args, char **envp)
-{
-    if (strcmp(args[0], "cd") == 0)
-        return builtin_cd(args, envp);
-    else if (strcmp(args[0], "echo") == 0)
-        return builtin_echo(args);
-    else if (strcmp(args[0], "exit") == 0)
-        return builtin_exit(args);
-    else if (strcmp(args[0], "pwd") == 0)
-        return builtin_pwd();
-    return 0;
-}
+#include "../../include/minishell.h"
 
 int builtin_echo(char **args)
 {
-    int i;
-
-    i = 1;
+    int i = 1;
     while (args[i])
     {
         printf("%s", args[i]);
