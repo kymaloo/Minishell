@@ -6,12 +6,12 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:10:38 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/07 14:34:55 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:32:29 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
+/*
 int builtin_cd(char **args, char **envp)
 {
     char cwd[1024];
@@ -30,6 +30,7 @@ int builtin_cd(char **args, char **envp)
         perror("cd failed - directory does not exist");
         return 1;
     }
+    printf("Path argument: %s\n", args[1]);
     if (chdir(args[1]) == -1)
     {
         perror("cd failed");
@@ -41,10 +42,45 @@ int builtin_cd(char **args, char **envp)
         update_env("PWD", cwd, envp);
     }
     else
-    {
         perror("getcwd failed after cd");
+    return 0;
+}*/
+
+int builtin_cd(char **args, char **envp)
+{
+    (void)envp; // Marque envp comme inutilisé
+
+    char cwd[1024];
+    int i;
+
+    if (!args[1])
+    {
+        fprintf(stderr, "cd: missing argument\n");
+        return 1;
     }
+
+    // Affiche chaque caractère de args[1] en ASCII
+    printf("Path argument (character by character): ");
+    for (i = 0; args[1][i] != '\0'; i++)
+        printf("%d ", args[1][i]);
+    printf("\n");
+
+    printf("Attempting to change to: %s\n", args[1]);
+    printf("Path length: %zu\n", strlen(args[1]));
+
+    if (chdir(args[1]) == -1)
+    {
+        perror("cd failed");
+        return 1;
+    }
+
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+    {
+        printf("Directory changed to: %s\n", cwd);
+    }
+    else
+        perror("getcwd failed after cd");
+
     return 0;
 }
-
 
