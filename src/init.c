@@ -11,3 +11,24 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	init_data(t_data *data)
+{
+	ft_bzero(data, sizeof(t_data));
+}
+
+void	parse(t_data *data)
+{
+    int result;
+
+    result = 0;
+	if (data->input == NULL)
+		return ;
+	stock_char_lst(data);
+    print_lst(data);
+    transform_char(data, T_SIMPLE_QUOTE);
+    transform_char(data, T_DOUBLE_QUOTE);
+    print_lst(data);
+    delete_lst(data->lst);
+    data->lst = NULL;
+}

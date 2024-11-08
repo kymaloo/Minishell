@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void	stock_char_lst(t_data *data)
 {
@@ -22,56 +22,54 @@ void	stock_char_lst(t_data *data)
 	while (data->input[i])
 	{
 		allocated_token = ft_calloc(sizeof(t_token), 1);
-		token = allocated_token;
-		token->type = token_for_symbol(input[i]);
-		token->character = ft_calloc(2, sizeof(char));
-		token->character[0] = input[i];
-		token->character[1] = '\0';
+		data->token = allocated_token;
+		data->token->type = token_for_symbol(data->input[i]);
+		data->token->character = ft_calloc(2, sizeof(char));
+		data->token->character[0] = data->input[i];
+		data->token->character[1] = '\0';
 		buffer = ft_lstnew(allocated_token);
 		if (buffer)
-			ft_lstadd_back(lst, buffer);
+			ft_lstadd_back(&data->lst, buffer);
 		i++;
 	}
 }
 
 int	token_for_symbol(char input)
 {
+	int	token;
+
+	token = 0;
 	if (input == '|')
-		token = PIPE;
+		token = T_PIPE;
 	else if (input == '<')
-		token = REDIRECTION_LEFT;
+		token = T_BROKET_LEFT;
 	else if (input == '>')
-		token = REDIRECTION_RIGHT;
+		token = T_BROKET_RIGHT;
 	else if (input == '\'')
-		token = QUOTE;
+		token = T_SIMPLE_QUOTE;
 	else if (input == '"')
-		token = DOUBLE_QUOTE;
+		token = T_DOUBLE_QUOTE;
 	else if (input == '$')
-		token = DOLLAR;
+		token = T_DOLLAR;
 	else if (input == 32 || (input >= 9 && input <= 13))
-		token = WHITE_SPACE;
-	else if (ft_isprint(input))
-		token = CHAR;
+		token = T_WHITE_SPACE;
 	else
-	{
-		printf(LEXER_INIT);
-		return (1);
-	}
-	return (0);
+		token = T_CHARACTER;
+	return (token);
 }
 
-void	print_lst(t_list *lst)
+void	print_lst(t_data *data)
 {
 	t_list		*cursor;
-	t_token	*data;
+	t_token		*tmp;
 
-	cursor = lst;
+	cursor = data->lst;
 	if (cursor == NULL)
 		return ;
 	while (cursor != NULL)
 	{
-		data = (t_token *)cursor->content;
-		printf("Character: %c, Token: %d\n", data->character, data->token);
+		tmp = (t_token *)cursor->content;
+		printf("Character: %c, Token: %d\n", tmp->character[0], tmp->type);
 		cursor = cursor->next;
 	}
 	printf("\n");
@@ -88,4 +86,94 @@ void	delete_lst(t_list *lst)
 void	del(void *content)
 {
 	free(content);
+}
+
+int	quote_is_pair(t_data *data)
+{
+	t_list		*cursor;
+	t_token		*tmp;
+	int			quote;
+	int			double_quote;
+
+	quote = 0;
+	double_quote = 0;
+	cursor = data->lst;
+	if (cursor == NULL)
+		return (1);
+	while (cursor != NULL)
+	{
+		tmp = (t_token *)cursor->content;
+		if (tmp->type == T_DOUBLE_QUOTE)
+			double_quote++;
+		if (tmp->type == T_SIMPLE_QUOTE)
+			quote++;
+		cursor = cursor->next;
+	}
+	if (quote % 2 != 0 || double_quote % 2 != 0)
+		return (1);
+	return (0);
+}
+
+void	transform_char(t_data *data, int token)
+{
+	t_list		*cursor;
+	t_token		*tmp;
+	int			cpt;
+
+	cpt = 0;
+	cursor = data->lst;
+	if (cursor == NULL)
+		return ;
+	while (cursor != NULL)
+	{
+		tmp = (t_token *)cursor->content;
+		if (cursor != NULL && cursor->next && tmp->type == token && cpt % 2 == 0)
+		{
+			if (tmp->type == token)
+				cpt++;
+			cursor = cursor->next;
+			tmp = (t_token *)cursor->content;
+			while (cursor != NULL && tmp->type != token)
+			{		
+				tmp->type = T_CHARACTER;
+				cursor = cursor->next;
+				if (cursor)
+					tmp = (t_token *)cursor->content;
+			}
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+void	check_dollar(t_data *data, int token)
+{
+	t_list		*cursor;
+	t_token		*tmp;
+	int			cpt;
+
+	cpt = 0;
+	cursor = data->lst;
+	if (cursor == NULL)
+		return ;
+	while (cursor != NULL)
+	{
+		tmp = (t_token *)cursor->content;
+		if (cursor != NULL && cursor->next && tmp->type == token && cpt % 2 == 0)
+		{
+			if (tmp->type == token)
+				cpt++;
+			cursor = cursor->next;
+			tmp = (t_token *)cursor->content;
+			if (cursor != NULL && tmp->type != T_DOLLAR)
+			{		
+				tmp->type = T_CHARACTER;
+				cursor = cursor->next;
+				if (cursor)
+					tmp = (t_token *)cursor->content;
+			}
+		}
+		else
+			cursor = cursor->next;
+	}
 }

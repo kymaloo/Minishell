@@ -20,7 +20,12 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-# define LEXER_INIT "minishell: lexical error"
+typedef struct s_token
+{
+	char			*character;
+	int				type;
+}	t_token;
+
 typedef struct s_data
 {
 	char			*input;
@@ -45,17 +50,15 @@ enum e_token
 	T_DELIMITER
 };
 
-typedef struct s_token
-{
-	char			*character;
-	int				type;
-}	t_token;
-
 int		exit_prog(char *input);
 int		token_for_symbol(char input);
-void	stock_char_lst(t_list **lst, t_token *token, char *input);
-void	print_lst(t_list *lst);
+void	stock_char_lst(t_data *data);
+void	print_lst(t_data *data);
 void	delete_lst(t_list *lst);
 void	del(void *content);
+void	init_data(t_data *data);
+void	parse(t_data *data);
+int		quote_is_pair(t_data *data);
+void	transform_char(t_data *data, int token);
 
 #endif

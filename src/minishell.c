@@ -20,24 +20,17 @@ int	main(void)
 	while (1)
 	{
 		data.input = readline("minishell$ ");
+		if (exit_prog(data.input) == 1)
+		{
+			free(data.input);
+			break ;
+		}
 		if (*data.input && data.input)
 		{
 			add_history(data.input);
 		}
 		parse(&data);
+		rl_on_new_line();
 	}
 	return (0);
-}
-
-void	init_data(t_data *data)
-{
-	ft_bzero(data, sizeof(t_data));
-}
-
-void	parse(t_data *data)
-{
-	if (data->input == NULL)
-		return ;
-	init_tokens(data);
-	parse_quotes(data);
 }

@@ -8,6 +8,7 @@ HEADERS	:= -Iinclude
 SRCS	:= 	src/minishell.c \
 			src/builtins.c  \
 			src/parsing/lexer.c		\
+			src/init.c \
 
 OBJS	:= ${SRCS:.c=.o}
 
@@ -18,6 +19,12 @@ all: $(NAME)
 
 n:
 	norminette src/ include/
+
+r:
+	make re && ./minishell
+
+v:
+	make re && valgrind --leak-check=full -s ./minishell
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
