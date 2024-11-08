@@ -7,7 +7,7 @@ HEADERS	:= -Iinclude
 
 SRCS	:= 	src/minishell.c \
 			src/builtins.c  \
-			src/lexer.c		\
+			src/parsing/lexer.c		\
 
 OBJS	:= ${SRCS:.c=.o}
 

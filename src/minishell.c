@@ -14,29 +14,30 @@
 
 int	main(void)
 {
-	t_pretoken	*pretoken;
-	t_list		*lst;
-	char		*input;
+	t_data	data;
 
-	pretoken = NULL;
-	lst = NULL;
+	init_data(&data);
 	while (1)
 	{
-		input = readline("minishell$ ");
-		if (exit_prog(input) == 1)
+		data.input = readline("minishell$ ");
+		if (*data.input && data.input)
 		{
-			free(input);
-			break ;
+			add_history(data.input);
 		}
-		stock_char_lst(&lst, pretoken, input);
-		print_lst(lst);
-		if (*input && input)
-		{
-			add_history(input);
-		}
-		delete_lst(lst);
-		rl_on_new_line();
-		free(input);
+		parse(&data);
 	}
 	return (0);
+}
+
+void	init_data(t_data *data)
+{
+	ft_bzero(data, sizeof(t_data));
+}
+
+void	parse(t_data *data)
+{
+	if (data->input == NULL)
+		return ;
+	init_tokens(data);
+	parse_quotes(data);
 }
