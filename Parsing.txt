@@ -1,6 +1,3 @@
-1 : Gestion des quotes
-    - Vérifié s'ils sont paires
-    - Changer le type de token de chaque caracteres entre chaque quotes pour pouvoir les traité différement
-    - Gérer le $ (entre double quotes et pas d'espace après = token dollars)
-    - Regroupé les characters ensemble
-
+Gestion des '$'
+    - echo "$HO" "ME" = ' ME'
+        - Des qu'il y a un '$' et qu'il n'y a rien qui existe dans les variables d'environement cela print rien

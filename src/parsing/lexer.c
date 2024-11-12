@@ -15,21 +15,11 @@
 void	stock_char_lst(t_data *data)
 {
 	int			i;
-	t_list		*buffer;
-	t_token		*allocated_token;
 
 	i = 0;
 	while (data->input[i])
 	{
-		allocated_token = ft_calloc(sizeof(t_token), 1);
-		data->token = allocated_token;
-		data->token->type = token_for_symbol(data->input[i]);
-		data->token->character = ft_calloc(2, sizeof(char));
-		data->token->character[0] = data->input[i];
-		data->token->character[1] = '\0';
-		buffer = ft_lstnew(allocated_token);
-		if (buffer)
-			ft_lstadd_back(&data->lst, buffer);
+		ft_lstadd_back(&data->lst, ft_lstnew(data->input[i], token_for_symbol(data->input[i])));
 		i++;
 	}
 }
@@ -61,15 +51,13 @@ int	token_for_symbol(char input)
 void	print_lst(t_data *data)
 {
 	t_list		*cursor;
-	t_token		*tmp;
 
 	cursor = data->lst;
 	if (cursor == NULL)
 		return ;
 	while (cursor != NULL)
 	{
-		tmp = (t_token *)cursor->content;
-		printf("Character: %c, Token: %d\n", tmp->character[0], tmp->type);
+		printf("Character: %c, Token: %d\n", cursor->character[0], cursor->type);
 		cursor = cursor->next;
 	}
 	printf("\n");
@@ -87,7 +75,7 @@ void	del(void *content)
 {
 	free(content);
 }
-
+/*
 int	quote_is_pair(t_data *data)
 {
 	t_list		*cursor;
@@ -177,3 +165,4 @@ void	check_dollar(t_data *data, int token)
 			cursor = cursor->next;
 	}
 }
+*/

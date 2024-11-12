@@ -26,9 +26,9 @@ void	parse(t_data *data)
 		return ;
 	stock_char_lst(data);
     print_lst(data);
-    transform_char(data, T_SIMPLE_QUOTE);
-    transform_char(data, T_DOUBLE_QUOTE);
-    print_lst(data);
+    //transform_char(data, T_SIMPLE_QUOTE);
+    //transform_char(data, T_DOUBLE_QUOTE);
+    //print_lst(data);
     delete_lst(data->lst);
     data->lst = NULL;
 }

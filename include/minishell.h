@@ -20,17 +20,10 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-typedef struct s_token
-{
-	char			*character;
-	int				type;
-}	t_token;
-
 typedef struct s_data
 {
 	char			*input;
 	t_list			*lst;
-	t_token			*token;
 }	t_data;
 
 enum e_token

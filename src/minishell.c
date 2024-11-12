@@ -25,11 +25,12 @@ int	main(void)
 			free(data.input);
 			break ;
 		}
-		if (*data.input && data.input)
-		{
-			add_history(data.input);
-		}
+		// if (*data.input && data.input)
+		// {
+		// 	add_history(data.input);
+		// }
 		parse(&data);
+		free(data.input);
 		rl_on_new_line();
 	}
 	return (0);

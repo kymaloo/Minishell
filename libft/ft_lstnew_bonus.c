@@ -12,14 +12,17 @@
 
 #include "libft.h"
 
-t_list	*ft_lstnew(void *content)
+t_list	*ft_lstnew(char	input, int type)
 {
 	t_list	*memb;
 
 	memb = malloc(sizeof(t_list));
 	if (!memb)
 		return (NULL);
-	memb->content = content;
+	memb->character = ft_calloc(2, sizeof(char));
+	memb->character[0] = input;
+	memb->character[1] = '\0';
+	memb->type = type;
 	memb->next = NULL;
 	return (memb);
 }
