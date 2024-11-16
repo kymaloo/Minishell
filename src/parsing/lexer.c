@@ -15,11 +15,14 @@
 void	stock_char_lst(t_data *data)
 {
 	int			i;
+	t_list		*buffer;
 
 	i = 0;
+	data->lst = NULL;
 	while (data->input[i])
 	{
-		ft_lstadd_back(&data->lst, ft_lstnew(data->input[i], token_for_symbol(data->input[i])));
+		buffer = ft_lstnew(data->input[i], token_for_symbol(data->input[i]));
+		ft_lstadd_back(&data->lst, buffer);
 		i++;
 	}
 }
@@ -39,8 +42,6 @@ int	token_for_symbol(char input)
 		token = T_SIMPLE_QUOTE;
 	else if (input == '"')
 		token = T_DOUBLE_QUOTE;
-	else if (input == '$')
-		token = T_DOLLAR;
 	else if (input == 32 || (input >= 9 && input <= 13))
 		token = T_WHITE_SPACE;
 	else
@@ -57,112 +58,124 @@ void	print_lst(t_data *data)
 		return ;
 	while (cursor != NULL)
 	{
-		printf("Character: %c, Token: %d\n", cursor->character[0], cursor->type);
+		printf("Character: %c, Token: %d\n", cursor->character, cursor->type);
 		cursor = cursor->next;
 	}
 	printf("\n");
 }
 
-void	delete_lst(t_list *lst)
-{
-	t_list	*cursor;
-
-	cursor = lst;
-	ft_lstclear(&cursor, del);
-}
-
-void	del(void *content)
-{
-	free(content);
-}
-/*
 int	quote_is_pair(t_data *data)
 {
-	t_list		*cursor;
-	t_token		*tmp;
-	int			quote;
-	int			double_quote;
+	int	status;
 
-	quote = 0;
-	double_quote = 0;
-	cursor = data->lst;
-	if (cursor == NULL)
-		return (1);
-	while (cursor != NULL)
+	data->quote_is_paire = 0;
+	status = EXIT_SUCCESS;
+	while (data->input[data->quote_is_paire])
 	{
-		tmp = (t_token *)cursor->content;
-		if (tmp->type == T_DOUBLE_QUOTE)
-			double_quote++;
-		if (tmp->type == T_SIMPLE_QUOTE)
-			quote++;
-		cursor = cursor->next;
+		if (data->input[data->quote_is_paire] == '"')
+		{
+			status = simple_or_double(data, '"');
+			if (status == EXIT_FAILURE)
+				return (status);
+		}
+		if (data->input[data->quote_is_paire] == '\'')
+		{
+			status = simple_or_double(data, '\'');
+			if (status == EXIT_FAILURE)
+				return (status);
+		}
+		data->quote_is_paire++;
 	}
-	if (quote % 2 != 0 || double_quote % 2 != 0)
-		return (1);
+	return (0);
+}
+
+int	simple_or_double(t_data *data, char type)
+{
+	int	pair;
+
+	pair = 1;
+	if (data->input[data->quote_is_paire] == type)
+	{
+		data->quote_is_paire++;
+		while (data->input[data->quote_is_paire] && data->input[data->quote_is_paire] != type)
+			data->quote_is_paire++;
+		if (data->input[data->quote_is_paire] == type)
+			pair++;
+		if (!data->input[data->quote_is_paire] && pair % 2 != 0)
+			return (1);
+	}
 	return (0);
 }
 
 void	transform_char(t_data *data, int token)
 {
 	t_list		*cursor;
-	t_token		*tmp;
 	int			cpt;
 
 	cpt = 0;
 	cursor = data->lst;
 	if (cursor == NULL)
 		return ;
+	if (check_quote_is_closed(data, token) == 1)
+		return ;
 	while (cursor != NULL)
 	{
-		tmp = (t_token *)cursor->content;
-		if (cursor != NULL && cursor->next && tmp->type == token && cpt % 2 == 0)
+		if (cursor && cursor->next && cursor->type == token && cpt % 2 == 0)
 		{
-			if (tmp->type == token)
+			if (cursor->type == token)
 				cpt++;
 			cursor = cursor->next;
-			tmp = (t_token *)cursor->content;
-			while (cursor != NULL && tmp->type != token)
+			while (cursor != NULL && cursor->type != token)
 			{		
-				tmp->type = T_CHARACTER;
+				cursor->type = T_CHARACTER;
 				cursor = cursor->next;
-				if (cursor)
-					tmp = (t_token *)cursor->content;
 			}
 		}
 		else
 			cursor = cursor->next;
 	}
+}
+
+int	check_quote_is_closed(t_data *data, int token)
+{
+	t_list	*cursor;
+
+	cursor = data->lst;
+	while (cursor && cursor->next && cursor->type != token)
+		cursor = cursor->next;
+	while (cursor && cursor->next)
+	{
+		cursor = cursor->next;
+		if (cursor->type == token)
+			return (0);
+	}
+	return (1);
 }
 
 void	check_dollar(t_data *data, int token)
 {
-	t_list		*cursor;
-	t_token		*tmp;
+	t_list	*cursor;
 	int			cpt;
 
 	cpt = 0;
+
 	cursor = data->lst;
-	if (cursor == NULL)
+	if (check_quote_is_closed(data, token) == 1)
 		return ;
-	while (cursor != NULL)
+	while (cursor && cursor->next)
 	{
-		tmp = (t_token *)cursor->content;
-		if (cursor != NULL && cursor->next && tmp->type == token && cpt % 2 == 0)
+		if (cursor->character == '"' && cpt % 2 == 0)
 		{
-			if (tmp->type == token)
+			if (cursor->type == token)
 				cpt++;
-			cursor = cursor->next;
-			tmp = (t_token *)cursor->content;
-			if (cursor != NULL && tmp->type != T_DOLLAR)
-			{		
-				tmp->type = T_CHARACTER;
+			while (cursor->character != '$')
 				cursor = cursor->next;
-				if (cursor)
-					tmp = (t_token *)cursor->content;
-			}
+			while (cursor->character == '$' && cursor->next->character == '$')
+				cursor = cursor->next;
+			if (cursor->next->type != T_WHITE_SPACE)
+				cursor->type = T_DOLLAR;
 		}
 		else
 			cursor = cursor->next;
 	}
 }
-*/

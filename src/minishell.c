@@ -19,19 +19,21 @@ int	main(void)
 	init_data(&data);
 	while (1)
 	{
-		data.input = readline("minishell$ ");
-		if (exit_prog(data.input) == 1)
-		{
-			free(data.input);
-			break ;
-		}
-		// if (*data.input && data.input)
-		// {
-		// 	add_history(data.input);
-		// }
+		nom_tmp(&data);
+		if (exit_prog(data.input))
+			break;
 		parse(&data);
-		free(data.input);
-		rl_on_new_line();
+		free_input(&data);
 	}
+	free_all(&data);
 	return (0);
+}
+
+void	nom_tmp(t_data *data)
+{
+	data->input = readline("minishell$ ");
+	if (*data->input && data->input)
+	{
+		add_history(data->input);
+	}
 }

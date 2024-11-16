@@ -12,23 +12,51 @@
 
 #include "minishell.h"
 
-void	init_data(t_data *data)
+void init_data(t_data *data)
 {
-	ft_bzero(data, sizeof(t_data));
+    data = ft_calloc(1, sizeof(t_data));
 }
 
-void	parse(t_data *data)
+int	parse(t_data *data)
 {
-    int result;
+	int	status;
 
-    result = 0;
+	status = EXIT_SUCCESS;
 	if (data->input == NULL)
-		return ;
+		return (EXIT_FAILURE);
+	status = parse_quote(data);
+	if (status == EXIT_FAILURE)
+	{
+		printf("Error: Parse quote failed\n");
+		return (status);
+	}
+	return (status);
+}
+
+int	parse_quote(t_data *data)
+{
+	int	status;
+
+	status = EXIT_SUCCESS;
+	status = quote_is_pair(data);
+	if (status == EXIT_FAILURE)
+		return (status);
 	stock_char_lst(data);
-    print_lst(data);
-    //transform_char(data, T_SIMPLE_QUOTE);
-    //transform_char(data, T_DOUBLE_QUOTE);
-    //print_lst(data);
-    delete_lst(data->lst);
-    data->lst = NULL;
+	transform_char(data, T_DOUBLE_QUOTE);
+	transform_char(data, T_SIMPLE_QUOTE);
+	check_dollar(data, T_DOUBLE_QUOTE);
+	print_lst(data);
+	return (status);
+}
+
+void	free_input(t_data *data)
+{
+	free(data->input);
+	data->input = NULL;
+}
+
+void	free_all(t_data *data)
+{
+	free_input(data);
+	rl_clear_history();
 }
