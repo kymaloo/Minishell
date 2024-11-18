@@ -6,38 +6,20 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:33:09 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/06 18:11:18 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:27:36 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void update_env(char *name, char *value, char **envp)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-    int i;
-    int name_len;
-    char *new_entry;
-
-    i = 0;
-    name_len = ft_strlen(name);
-    new_entry = malloc(name_len + strlen(value) + 2);
-    if (!new_entry)
-        return;
-    sprintf(new_entry, "%s=%s", name, value);
-    
-    while (envp[i])
-    {
-        if (strncmp(envp[i], name, name_len) == 0 && envp[i][name_len] == '=')
-        {
-            free(envp[i]);
-            envp[i] = new_entry;
-            return;
-        }
-        i++;
-    }
-
-    envp[i] = new_entry;
-    envp[i + 1] = NULL;
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
 int is_builtin(char *cmd)
@@ -46,15 +28,24 @@ int is_builtin(char *cmd)
             strcmp(cmd, "exit") == 0 || strcmp(cmd, "pwd") == 0);
 }
 
-int execute_builtin(char **args, char **envp)
+int	execute_builtin(char **args, char **envp)
 {
-    if (strcmp(args[0], "cd") == 0)
-        return builtin_cd(args, envp);
-    else if (strcmp(args[0], "echo") == 0)
-        return builtin_echo(args);
-    else if (strcmp(args[0], "exit") == 0)
-        return builtin_exit(args);
-    else if (strcmp(args[0], "pwd") == 0)
-        return builtin_pwd();
-    return 0;
+//	int	i;
+
+//	i = 0;
+	/*while (args[i])
+	{
+		printf("args[%d]: '%s'\n", i, args[i]);
+		i++;
+	}*/
+	if (ft_strcmp(args[0], "cd") == 0)
+		return (builtin_cd(args, envp));
+	else if (ft_strcmp(args[0], "echo") == 0)
+		return (builtin_echo(args, envp));
+	else if (ft_strcmp(args[0], "exit") == 0)
+		return (builtin_exit(args));
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		return (builtin_pwd());
+	perror("Unknown builtin");
+	return (1);
 }

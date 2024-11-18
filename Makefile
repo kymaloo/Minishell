@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+         #
+#    By: r <r@student.42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/17 15:29:02 by aafounas          #+#    #+#              #
-#    Updated: 2024/11/06 18:06:39 by aafounas         ###   ########.fr        #
+#    Updated: 2024/11/16 23:30:59 by r                ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ HEADERS	:= -Iinclude
 
 SRCS	:= 	src/minishell.c src/Exec/command_info.c src/Exec/execute_utils.c \
 			src/Exec/path_utils.c src/Exec/process_utils.c src/Exec/redirection_utils.c src/builtins/cd.c \
-			src/builtins/echo.c src/builtins/execute_builtin.c src/builtins/exit.c src/builtins/pwd.c src/ast.c\
+			src/builtins/echo.c src/builtins/execute_builtin.c src/builtins/exit.c src/builtins/pwd.c src/builtins/env.c src/ast.c\
 
 OBJS	:= ${SRCS:.c=.o}
 

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: r <r@student.42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:55:33 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/02 17:34:08 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:30:40 by r                ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	run_command(char *input, char **envp)
+/*void	run_command(char *input, char **envp)
 {
 	char	**cmd;
 	int		i;
@@ -39,23 +39,51 @@ void	run_command(char *input, char **envp)
 		i++;
 	}
 	free(cmd);
+}*/
+void	run_command(char *input, char **envp)
+{
+	char	**args;
+
+	args = ft_split(input, ' ');
+	if (!args || !args[0])
+	{
+		if (args)
+			free_array(args);
+		return ;
+	}
+	if (is_builtin(args[0]))
+		execute_builtin(args, envp);
+	else
+		execute(input, envp);
+	free_array(args);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	**env_copy;
 	char	*input;
 
 	(void)argc;
 	(void)argv;
+
+	env_copy = duplicate_env(envp);
+	if (!env_copy)
+	{
+		perror("main: duplicate_env failed");
+		exit(EXIT_FAILURE);
+	}
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (input && *input)
 		{
 			add_history(input);
-			run_command(input, envp);
+			run_command(input, env_copy);
 		}
 		free(input);
 	}
+	free_array(env_copy);
 	return (0);
 }
+

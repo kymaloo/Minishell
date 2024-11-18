@@ -6,7 +6,7 @@
 /*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/06 18:11:54 by aafounas         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:23:58 by aafounas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,17 @@ void prepare_command_execution(char **cmd, char **envp);
 void execute(char *argv, char **envp);
 /*//////////////////////BUILTIN//////////////////*/
 int builtin_cd(char **args, char **envp);
-int builtin_echo(char **args);
+int	is_n_flag(char *str);
+void	print_arguments(char **args, int start);
+char *remove_quotes(const char *arg, char **envp);
+char *expand_variable(const char *arg, char **envp);
+int builtin_echo(char **args, char **envp);
 void update_env(char *name, char *value, char **envp);
+char **duplicate_env(char **envp);
+void duplicate_env_copy(char **envp, char **new_env, int count);
+void	update_env_replace(char **envp, int index, char *new_entry);
+void update_env_add(char **envp, int i, char *new_entry);
+int	ft_strcmp(const char *s1, const char *s2);
 int is_builtin(char *cmd);
 int execute_builtin(char **args, char **envp);
 int builtin_exit(char **args);
