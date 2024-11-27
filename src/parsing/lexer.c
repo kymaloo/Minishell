@@ -126,7 +126,7 @@ void	transform_char(t_data *data, int token)
 				cpt++;
 			cursor = cursor->next;
 			while (cursor != NULL && cursor->type != token)
-			{		
+			{
 				cursor->type = T_CHARACTER;
 				cursor = cursor->next;
 			}
@@ -155,10 +155,9 @@ int	check_quote_is_closed(t_data *data, int token)
 void	check_dollar(t_data *data, int token)
 {
 	t_list	*cursor;
-	int			cpt;
+	int		cpt;
 
 	cpt = 0;
-
 	cursor = data->lst;
 	if (check_quote_is_closed(data, token) == 1)
 		return ;
@@ -166,13 +165,13 @@ void	check_dollar(t_data *data, int token)
 	{
 		if (cursor->character == '"' && cpt % 2 == 0)
 		{
-			if (cursor->type == token)
+			if (cursor && cursor->next && cursor->type == token)
 				cpt++;
-			while (cursor->character != '$')
+			while (cursor && cursor->next && cursor->character != '$')
 				cursor = cursor->next;
-			while (cursor->character == '$' && cursor->next->character == '$')
+			while (cursor && cursor->next && cursor->character == '$' && cursor->next->character == '$')
 				cursor = cursor->next;
-			if (cursor->next->type != T_WHITE_SPACE)
+			if (cursor && cursor->next && cursor->next->type != T_WHITE_SPACE)
 				cursor->type = T_DOLLAR;
 		}
 		else

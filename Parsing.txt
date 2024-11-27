@@ -1,1 +1,22 @@
-|| a gere bash
+<< >>
+<<< >>>
+Code d'erreur
+Regrouper characteres
+
+cat << "EOF"
+
+> $USER
+> EOF
+$USER
+
+cat << 'EOF'
+
+> $USER
+> EOF
+$USER
+
+cat << EOF
+
+> $USER
+> EOF
+trgaspar

@@ -14,7 +14,9 @@
 
 int	exit_prog(char *input)
 {
-	if (!input || ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+	if (ft_strlen(input) == 0)
+		return (0);
+	if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
 		return (1);
 	return (0);
 }

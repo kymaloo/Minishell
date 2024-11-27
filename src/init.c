@@ -12,11 +12,6 @@
 
 #include "minishell.h"
 
-void init_data(t_data *data)
-{
-    data = ft_calloc(1, sizeof(t_data));
-}
-
 int	parse(t_data *data)
 {
 	int	status;
@@ -30,6 +25,7 @@ int	parse(t_data *data)
 		printf("Error: Parse quote failed\n");
 		return (status);
 	}
+	ft_lstclear(&data->lst);
 	return (status);
 }
 
@@ -45,7 +41,8 @@ int	parse_quote(t_data *data)
 	transform_char(data, T_DOUBLE_QUOTE);
 	transform_char(data, T_SIMPLE_QUOTE);
 	check_dollar(data, T_DOUBLE_QUOTE);
-	print_lst(data);
+	stock_string_token(data);
+	//print_lst(data);
 	return (status);
 }
 

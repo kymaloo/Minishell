@@ -16,12 +16,11 @@ int	main(void)
 {
 	t_data	data;
 
-	init_data(&data);
 	while (1)
 	{
 		nom_tmp(&data);
 		if (exit_prog(data.input))
-			break;
+			break ;
 		parse(&data);
 		free_input(&data);
 	}

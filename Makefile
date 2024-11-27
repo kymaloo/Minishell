@@ -9,6 +9,7 @@ HEADERS	:= -Iinclude
 SRCS	:= 	src/minishell.c \
 			src/builtins.c  \
 			src/parsing/lexer.c		\
+			src/parsing/parse.c		\
 			src/init.c \
 
 OBJS	:= ${SRCS:.c=.o}
@@ -36,7 +37,6 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_EXE) $(LDFLAGS) $(HEADERS) -o $(NAME)
 	@echo "\033[32m${NAME} Compiled!\033[0m"
 	
-
 clean:
 	@echo "\033[31m----Cleaning object files----\033[0m"
 	@rm -rf $(OBJS)

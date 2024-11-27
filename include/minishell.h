@@ -24,8 +24,17 @@ typedef struct s_data
 {
 	int				quote_is_paire;
 	char			*input;
+	char			**array;
 	t_list			*lst;
+	//t_token			*token;
 }	t_data;
+
+// typedef struct s_token
+// {
+// 	char			*character;
+// 	int				type;
+// 	struct s_token	*next;
+// }	t_token;
 
 enum e_pretoken
 {
@@ -39,29 +48,20 @@ enum e_pretoken
 	T_CHARACTER,
 };
 
-/*
-enum e_token
-{
-	T_PIPE,
-	T_BROKET_LEFT,
-	T_BROKET_RIGHT,
-	T_DOUBLE_BROKET_LEFT,
-	T_DOUBLE_BROKET_RIGHT,
-	T_SIMPLE_QUOTE,
-	T_DOUBLE_QUOTE,
-	T_DOLLAR,
-	T_WHITE_SPACE,
-	T_WORD,
-	T_VARIABLE,
-	T_DELIMITER
-};
-*/
+// enum e_token
+// {
+// 	T_PIPE,
+// 	T_DOUBLE_BROKET_LEFT,
+// 	T_DOUBLE_BROKET_RIGHT,
+// 	T_DOLLAR,
+// 	T_WHITE_SPACE,
+// 	T_WORD,
+// };
 
 int		exit_prog(char *input);
 int		token_for_symbol(char input);
 void	stock_char_lst(t_data *data);
 void	print_lst(t_data *data);
-void	init_data(t_data *data);
 int		parse(t_data *data);
 int		quote_is_pair(t_data *data);
 int		simple_or_double(t_data *data, char type);
@@ -72,5 +72,6 @@ void	free_all(t_data *data);
 void	nom_tmp(t_data *data);
 void	check_dollar(t_data *data, int token);
 int		check_quote_is_closed(t_data *data, int token);
+void	stock_string_token(t_data *data);
 
 #endif
