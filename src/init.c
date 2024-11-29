@@ -42,7 +42,9 @@ int	parse_quote(t_data *data)
 	transform_char(data, T_SIMPLE_QUOTE);
 	check_dollar(data, T_DOUBLE_QUOTE);
 	stock_string_token(data);
-	//print_lst(data);
+	ft_lstclear(&data->lst);
+	print_lst_token(data);
+	ft_lstclear_token(&data->token);
 	return (status);
 }
 

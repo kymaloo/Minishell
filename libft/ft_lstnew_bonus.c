@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-t_list	*ft_lstnew(char	input, int type)
+t_list	*ft_lstnew(char input, int type)
 {
 	t_list	*memb;
 

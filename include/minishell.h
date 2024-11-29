@@ -20,21 +20,22 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
+typedef struct s_token
+{
+	char			*character;
+	int				type;
+	struct s_token	*next;
+}	t_token;
+
 typedef struct s_data
 {
 	int				quote_is_paire;
 	char			*input;
-	char			**array;
+	char			*str_stock_lst;
 	t_list			*lst;
-	//t_token			*token;
+	t_token			*token;
 }	t_data;
 
-// typedef struct s_token
-// {
-// 	char			*character;
-// 	int				type;
-// 	struct s_token	*next;
-// }	t_token;
 
 enum e_pretoken
 {
@@ -48,15 +49,15 @@ enum e_pretoken
 	T_CHARACTER,
 };
 
-// enum e_token
-// {
-// 	T_PIPE,
-// 	T_DOUBLE_BROKET_LEFT,
-// 	T_DOUBLE_BROKET_RIGHT,
-// 	T_DOLLAR,
-// 	T_WHITE_SPACE,
-// 	T_WORD,
-// };
+enum e_token
+{
+	T_DOUBLE_BROKET_LEFT,
+	T_DOUBLE_BROKET_RIGHT,
+	T_WORD_SIMPLE_QUOTE,
+	T_WORD_DOUBLE_QUOTE,
+	T_WORD,
+	T_EXPAND,
+};
 
 int		exit_prog(char *input);
 int		token_for_symbol(char input);
@@ -73,5 +74,21 @@ void	nom_tmp(t_data *data);
 void	check_dollar(t_data *data, int token);
 int		check_quote_is_closed(t_data *data, int token);
 void	stock_string_token(t_data *data);
+bool	is_dollar_in_double_quotes(t_data *data);
+
+void	handle_quote(t_data *data, t_list **cursor, int type);
+void	handle_dollar(t_data *data, t_list **cursor);
+void	handle_character(t_data *data, t_list **cursor);
+int		count_handle_quote(t_list *cursor, int type);
+int		count_handle_dollar(t_list *cursor);
+int		count_handle_character(t_list *cursor);
+
+void	ft_lstadd_back_token(t_token **token, t_token *new);
+t_token	*ft_lstlast_token(t_token *token);
+t_token	*ft_lstnew_token(char *input, int type);
+int	ft_lstsize_token(t_token *token);
+void	print_lst_token(t_data *data);
+void handle_and_store_token(t_data *data, t_list **cursor, int type, int token_type);
+void	ft_lstclear_token(t_token **token);
 
 #endif
