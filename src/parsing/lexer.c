@@ -346,6 +346,13 @@ void stock_string_token(t_data *data)
 			tmp[0] = cursor->character;
 			tmp[1] = '\0';
             buffer = ft_lstnew_token(tmp, token_for_symbol(tmp[0]));
+    		if (!buffer)
+    		{
+        		fprintf(stderr, "Error: Failed to allocate memory for token\n");
+        		free(data->str_stock_lst);
+				data->str_stock_lst = NULL;
+        		return;
+    		}
 			ft_lstadd_back_token(&data->token, buffer);
             cursor = cursor->next;
         }
@@ -367,11 +374,13 @@ void handle_and_store_token(t_data *data, t_list **cursor, int type, int token_t
     buffer = ft_lstnew_token(data->str_stock_lst, token_type);
     if (!buffer)
     {
-        fprintf(stderr, "Error: Failed to allocate memory for token\n");
+        //fprintf(stderr, "Error: Failed to allocate memory for token\n");
         free(data->str_stock_lst);
+		data->str_stock_lst = NULL;
         return;
     }
     ft_lstadd_back_token(&data->token, buffer);
     free(data->str_stock_lst);
     data->str_stock_lst = NULL;
+	// free(data->input);
 }

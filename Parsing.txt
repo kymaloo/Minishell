@@ -30,3 +30,7 @@ A faire :
         - Verifier ordre
         - Heredoc
         - Prier
+
+
+minishell$ $USR$USER
+String: $USR$USER  Token: 5

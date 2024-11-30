@@ -31,7 +31,7 @@ int	main(void)
 void	nom_tmp(t_data *data)
 {
 	data->input = readline("minishell$ ");
-	if (*data->input && data->input)
+	if (data->input && *data->input)
 	{
 		add_history(data->input);
 	}

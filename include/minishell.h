@@ -36,7 +36,6 @@ typedef struct s_data
 	t_token			*token;
 }	t_data;
 
-
 enum e_pretoken
 {
 	T_PIPE,
@@ -75,20 +74,18 @@ void	check_dollar(t_data *data, int token);
 int		check_quote_is_closed(t_data *data, int token);
 void	stock_string_token(t_data *data);
 bool	is_dollar_in_double_quotes(t_data *data);
-
 void	handle_quote(t_data *data, t_list **cursor, int type);
 void	handle_dollar(t_data *data, t_list **cursor);
 void	handle_character(t_data *data, t_list **cursor);
 int		count_handle_quote(t_list *cursor, int type);
 int		count_handle_dollar(t_list *cursor);
 int		count_handle_character(t_list *cursor);
-
 void	ft_lstadd_back_token(t_token **token, t_token *new);
 t_token	*ft_lstlast_token(t_token *token);
 t_token	*ft_lstnew_token(char *input, int type);
-int	ft_lstsize_token(t_token *token);
+int		ft_lstsize_token(t_token *token);
 void	print_lst_token(t_data *data);
-void handle_and_store_token(t_data *data, t_list **cursor, int type, int token_type);
+void	handle_and_store_token(t_data *data, t_list **cursor, int type, int token_type);
 void	ft_lstclear_token(t_token **token);
 
 #endif

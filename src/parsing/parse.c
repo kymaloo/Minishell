@@ -6,7 +6,7 @@
 /*   By: trgaspar <trgaspar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 07:29:33 by trgaspar          #+#    #+#             */
-/*   Updated: 2024/11/29 09:38:37 by trgaspar         ###   ########.fr       */
+/*   Updated: 2024/11/30 10:12:37 by trgaspar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_token	*ft_lstnew_token(char *input, int type)
 	memb->character = ft_strdup(input);
 	if (!memb->character)
 	{
+		memb->character = NULL;
 		free(memb);
 		return (NULL);
 	}
@@ -101,6 +102,7 @@ void	ft_lstclear_token(t_token **token)
 	while (tmp)
 	{
 		tmp2 = tmp->next;
+		free(tmp->character);
 		free(tmp);
 		tmp = tmp2;
 	}
