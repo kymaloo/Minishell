@@ -23,7 +23,6 @@ void handle_output_redirection(t_token **tokens, int *stdout_backup, t_token *cu
     ft_lstclear_token(tokens);
 }
 
-// Gère les redirections d'entrée
 void handle_input_redirection(t_token **tokens, int *stdin_backup, t_token *current)
 {
     int fd;

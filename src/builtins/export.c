@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-int validate_and_clean(char *arg, char **cleaned)
+/*int validate_and_clean(char *arg, char **cleaned)
 {
     debug_log("validate_and_clean: received argument '%s'", arg);
     if (has_unmatched_quotes(arg))
@@ -26,7 +26,7 @@ int validate_and_clean(char *arg, char **cleaned)
         return (1);
     }
     return (0);
-}
+}*/
 
 int handle_export_arg(t_token *token, char **envp)
 {
