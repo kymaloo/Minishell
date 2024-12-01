@@ -7,7 +7,7 @@ int builtin_pwd(void)
     if (getcwd(cwd, sizeof(cwd)) != NULL)
     {
         printf("%s\n", cwd);
-        return 0;
+        return (0);
     }
     else
     {

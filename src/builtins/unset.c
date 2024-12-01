@@ -21,23 +21,22 @@ void remove_env(char *key, char **envp)
     }
 }
 
-int builtin_unset(char **args, char **envp)
+int builtin_unset(t_token *tokens, char **envp)
 {
-    int i;
+    t_token *token = tokens;
 
-    i = 1;
-    while (args[i])
+    while (token)
     {
-        if (is_valid_identifier(args[i]))
+        if (is_valid_identifier(token->character))
         {
-            remove_env(args[i], envp);
+            remove_env(token->character, envp);
         }
         else
         {
             ft_putstr_fd("unset: invalid identifier\n", 2);
             return (1);
         }
-        i++;
+        token = token->next;
     }
     return (0);
 }

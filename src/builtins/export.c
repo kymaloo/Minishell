@@ -1,27 +1,6 @@
 
 #include "../../include/minishell.h"
 
-int has_unmatched_quotes(const char *str)
-{
-    char quote = 0;
-
-    if (!str)
-        return (1);
-
-    while (*str)
-    {
-        if ((*str == '"' || *str == '\''))
-        {
-            if (!quote)
-                quote = *str;
-            else if (quote == *str)
-                quote = 0;
-        }
-        str++;
-    }
-    return (quote != 0);
-}
-
 int validate_and_clean(char *arg, char **cleaned)
 {
     debug_log("validate_and_clean: received argument '%s'", arg);
@@ -49,35 +28,26 @@ int validate_and_clean(char *arg, char **cleaned)
     return (0);
 }
 
-int handle_export_arg(const char *input, char **envp)
+int handle_export_arg(t_token *token, char **envp)
 {
-    char *parsed_arg;
     char *cleaned_arg;
 
-    if (!input || !*input)
+    if (!token || !token->character)
     {
-        fprintf(stderr, "handle_export_arg: empty argument\n");
+        ft_putstr_fd("export: empty argument\n", 2);
         return (1);
     }
-    debug_log("handle_export_arg: received input '%s'", input);
-    parsed_arg = parse_argument(input);
-    if (!parsed_arg)
-    {
-        fprintf(stderr, "export: unmatched quotes\n");
-        return (1);
-    }
-    debug_log("handle_export_arg: parsed argument '%s'", parsed_arg);
-    cleaned_arg = trim_quotes(parsed_arg);
-    free(parsed_arg);
+    debug_log("handle_export_arg: received input '%s'", token->character);
+    cleaned_arg = quotes_env(token->character); // Utilisation de la fonction pour enlever les quotes si elles existent
     if (!cleaned_arg)
     {
-        fprintf(stderr, "export: invalid identifier '%s'\n", input);
+        ft_putstr_fd("export: malloc failed\n", 2);
         return (1);
     }
     debug_log("handle_export_arg: cleaned argument '%s'", cleaned_arg);
     if (!is_valid_identifier(cleaned_arg))
     {
-        fprintf(stderr, "export: '%s': not a valid identifier\n", cleaned_arg);
+        ft_putstr_fd("export: invalid identifier\n", 2);
         free(cleaned_arg);
         return (1);
     }
@@ -87,26 +57,23 @@ int handle_export_arg(const char *input, char **envp)
     return (0);
 }
 
-int builtin_export(char **args, char **envp)
+int builtin_export(t_token *tokens, char **envp)
 {
-    int i = 1;
-
-    debug_log("builtin_export: processing arguments");
-    if (!args || !args[1])
+    t_token *token = tokens;
+    if (!token)
     {
-        debug_log("builtin_export: no arguments, displaying environment");
         display_export_env(envp);
         return (0);
     }
-    while (args[i])
+    while (token)
     {
-        debug_log("builtin_export: handling argument '%s'", args[i]);
-        if (handle_export_arg(args[i], envp) != 0)
+        debug_log("builtin_export: handling argument '%s'", token->character);
+        if (handle_export_arg(token, envp) != 0)
         {
-            fprintf(stderr, "builtin_export: failed to handle '%s'\n", args[i]);
+            fprintf(stderr, "builtin_export: failed to handle '%s'\n", token->character);
             return (1);
         }
-        i++;
+        token = token->next;
     }
     return (0);
 }
@@ -126,7 +93,3 @@ int display_export_env(char **envp)
     }
     return (0);
 }
-
-
-
-
