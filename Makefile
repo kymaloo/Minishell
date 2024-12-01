@@ -7,10 +7,14 @@ LDFLAGS	:= -lreadline
 HEADERS	:= -Iinclude
 
 SRCS	:= 	src/minishell.c \
-			src/builtins.c  \
-			src/parsing/lexer.c		\
-			src/parsing/parse.c		\
-			src/init.c \
+			src/parsing/stock_new_lst.c		\
+			src/parsing/stock_new_lst_utils.c		\
+			src/parsing/lst_token.c		\
+			src/parsing/lst_utils.c		\
+			src/parsing/lst_token_utils.c		\
+			src/parsing/parse_quote.c		\
+			src/parsing/parse_dollar.c		\
+			src/parsing/parse_init.c \
 
 OBJS	:= ${SRCS:.c=.o}
 
