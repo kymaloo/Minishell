@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   execute_builtin.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/02 17:33:09 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/18 16:27:36 by aafounas         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -24,8 +13,9 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 int is_builtin(char *cmd)
 {
-    return (strcmp(cmd, "cd") == 0 || strcmp(cmd, "echo") == 0 ||
-            strcmp(cmd, "exit") == 0 || strcmp(cmd, "pwd") == 0);
+    return (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "echo") == 0 ||
+            ft_strcmp(cmd, "exit") == 0 || ft_strcmp(cmd, "pwd") == 0 ||
+			ft_strcmp(cmd, "export") == 0 || ft_strcmp(cmd, "unset") == 0);
 }
 
 int	execute_builtin(char **args, char **envp)
@@ -46,6 +36,10 @@ int	execute_builtin(char **args, char **envp)
 		return (builtin_exit(args));
 	else if (ft_strcmp(args[0], "pwd") == 0)
 		return (builtin_pwd());
+	else if (ft_strcmp(args[0], "export") == 0)
+		return (builtin_export(args, envp));
+	else if (ft_strcmp(args[0], "unset") == 0)
+		return (builtin_unset(args, envp));
 	perror("Unknown builtin");
 	return (1);
 }

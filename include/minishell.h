@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aafounas <aafounas@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 17:15:31 by aafounas          #+#    #+#             */
-/*   Updated: 2024/11/18 16:23:58 by aafounas         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 
 #ifndef MINISHELL_H
@@ -17,6 +6,8 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -53,27 +44,44 @@ void run_child_process(char *path, char **cmd, char **envp);
 void handle_parent_process(pid_t pid);
 void prepare_command_execution(char **cmd, char **envp);
 void execute(char *argv, char **envp);
+int	run_command(char *input, char **envp);
 /*//////////////////////BUILTIN//////////////////*/
 int builtin_cd(char **args, char **envp);
 int	is_n_flag(char *str);
-void	print_arguments(char **args, int start);
 char *remove_quotes(const char *arg, char **envp);
 char *expand_variable(const char *arg, char **envp);
 int builtin_echo(char **args, char **envp);
 void update_env(char *name, char *value, char **envp);
 char **duplicate_env(char **envp);
+int ft_isspace(char c);
 void duplicate_env_copy(char **envp, char **new_env, int count);
-void	update_env_replace(char **envp, int index, char *new_entry);
+void update_env_replace(char **envp, int index, char *new_entry);
 void update_env_add(char **envp, int i, char *new_entry);
 int	ft_strcmp(const char *s1, const char *s2);
 int is_builtin(char *cmd);
 int execute_builtin(char **args, char **envp);
+int has_unmatched_quotes(const char *str);
+int display_env(char **envp);
+char *trim_quotes(const char *input);
+int handle_export_arg(const char *input, char **envp);
+int validate_and_clean(char *arg, char **cleaned);
+void add_or_update_env(const char *arg, char **envp);
+int builtin_export(char **args, char **envp);
+int is_duplicate(char **envp, const char *arg);
+char *ft_strcat(char *dest, const char *src);
+char *parse_argument(const char *input);
+void free_arguments(char **args);
+int builtin_unset(char **args, char **envp);
+int is_valid_identifier(const char *str);
+int update_env_value(char **env, const char *new_entry);
+int display_export_env(char **envp);
+char *quotes_env(const char *str);
+void debug_log(const char *format, ...);
+void add_or_update_env(const char *arg, char **envp);
+char *get_env_name(const char *arg);
+void remove_env(char *key, char **envp);
 int builtin_exit(char **args);
 int builtin_pwd(void);
-/*/////////////////////AST///////////////////////*/
-t_ast_node  *create_ast_node(char *cmd, char **args);
-void execute_command(t_ast_node *node, char **envp);
-void execute_ast(t_ast_node *node, char **envp);
 
 
 #endif
