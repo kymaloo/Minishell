@@ -1,11 +1,20 @@
 NAME	:= minishell
 
 CFLAGS	:= -Wextra -Wall -Werror -g3
+
 LDFLAGS	:= -lreadline
 
 HEADERS	:= -Iinclude
 
 SRCS	:= 	src/minishell.c \
+			src/parsing/stock_new_lst.c		\
+			src/parsing/stock_new_lst_utils.c		\
+			src/parsing/lst_token.c		\
+			src/parsing/lst_utils.c		\
+			src/parsing/lst_token_utils.c		\
+			src/parsing/parse_quote.c		\
+			src/parsing/parse_dollar.c		\
+			src/parsing/parse_init.c \
 
 OBJS	:= ${SRCS:.c=.o}
 
@@ -17,6 +26,12 @@ all: $(NAME)
 n:
 	norminette src/ include/
 
+r:
+	make re && ./minishell
+
+v:
+	make re && valgrind --leak-check=full -s ./minishell
+
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
@@ -26,7 +41,6 @@ $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_EXE) $(LDFLAGS) $(HEADERS) -o $(NAME)
 	@echo "\033[32m${NAME} Compiled!\033[0m"
 	
-
 clean:
 	@echo "\033[31m----Cleaning object files----\033[0m"
 	@rm -rf $(OBJS)

@@ -1,0 +1,36 @@
+<< >>
+<<< >>>
+Code d'erreur
+Regrouper characteres
+
+cat << "EOF"
+
+> $USER
+> EOF
+$USER
+
+cat << 'EOF'
+
+> $USER
+> EOF
+$USER
+
+cat << EOF
+
+> $USER
+> EOF
+trgaspar
+
+
+A faire :
+        - Check leaks
+        - Check dans les double quote dollar
+        - Regrouper "<>| "
+        - Changer variable environnement exp : $USER = trgaspar
+        - Verifier ordre
+        - Heredoc
+        - Prier
+
+
+minishell$ $USR$USER
+String: $USR$USER  Token: 5
