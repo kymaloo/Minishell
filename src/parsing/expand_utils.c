@@ -1,9 +1,10 @@
 #include "../include/minishell.h"
 
-void replace_expand_in_double_quote(t_data *data)
+void	replace_expand_in_double_quote(t_data *data)
 {
-    t_token *cursor = data->token;
+    t_token *cursor;
 
+	cursor = data->token;
     while (cursor)
     {
         if (cursor->type == T_WORD_DOUBLE_QUOTE)
@@ -14,12 +15,15 @@ void replace_expand_in_double_quote(t_data *data)
     }
 }
 
-void handle_double_quote(t_token *cursor, t_data *data)
+void	handle_double_quote(t_token *cursor, t_data *data)
 {
+	char *str;
+
     if (check_dollar_in_double_quote(cursor->character) == 0)
     {
-        char *str = extract_content_between_quotes(cursor->character);
+        str = extract_content_between_quotes(cursor->character);
         stock_str_in_lst(data, str);
+		free(str);
         stock_string_token(data, TMP);
         ft_lstclear(&data->lst);
         replace_expand(data, TMP);
@@ -29,11 +33,15 @@ void handle_double_quote(t_token *cursor, t_data *data)
     }
 }
 
-char *extract_content_between_quotes(char *str)
+char	*extract_content_between_quotes(char *str)
 {
-    int i = 0, j = 1;
-    char *result = malloc(ft_strlen(str) - 1);
+    int i;
+	int	j;
+    char *result;
 
+	i = 0;
+	j = 1;
+	result = malloc(ft_strlen(str) - 1);
     while (str[j] && str[j] != '"')
     {
         result[i] = str[j];
