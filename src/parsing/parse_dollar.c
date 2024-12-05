@@ -1,5 +1,7 @@
 #include "../include/minishell.h"
 
+//Check si les quotes sont ferme en liste chainer
+
 int	check_quote_is_closed(t_data *data, int token)
 {
 	t_list	*cursor;
@@ -15,6 +17,9 @@ int	check_quote_is_closed(t_data *data, int token)
 	}
 	return (1);
 }
+
+//Check si le dollars dans les doubles 
+//quotes soit bien un dollars valide pour expand
 
 void	check_dollar(t_data *data, int token, int cpt)
 {
@@ -44,6 +49,7 @@ void	check_dollar(t_data *data, int token, int cpt)
 	}
 }
 
+//Check s'il y a un dollar dans les doubles quotes
 bool	is_dollar_in_double_quotes(t_data *data)
 {
 	bool	in_double_quotes;

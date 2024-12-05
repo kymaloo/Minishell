@@ -1,91 +1,82 @@
 
 #include "../../include/minishell.h"
 
-t_token *duplicate_env(char **envp)
+char	**duplicate_env(char **envp)
 {
-	t_token *env_list = NULL;
-	t_token *new_node;
-	int i = 0;
+	int		count;
+	char	**new_env;
 
-	while (envp[i])
+	count = 0;
+	while (envp[count])
+		count++;
+	new_env = malloc((count + 1) * sizeof(char *));
+	if (!new_env)
 	{
-		new_node = ft_lstnew_token(envp[i], T_ENV);
-		if (!new_node)
+		perror("duplicate_env: Allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	duplicate_env_copy(envp, new_env, count);
+	return (new_env);
+}
+
+void	duplicate_env_copy(char **envp, char **new_env, int count)
+{
+	int	i;
+
+	i = 0;
+	while (i < count)
+	{
+		new_env[i] = ft_strdup(envp[i]);
+		if (!new_env[i])
 		{
-			perror("duplicate_env: malloc failed");
-			ft_lstclear_token(&env_list);
+			perror("duplicate_env: Allocation failed");
 			exit(EXIT_FAILURE);
 		}
-		ft_lstadd_back_token(&env_list, new_node);
 		i++;
 	}
-	return (env_list);
+	new_env[count] = NULL;
 }
 
-char **convert_env_to_array(t_token *env_list)
+void	update_env(char *name, char *value, char **envp)
 {
-	char **env_array;
-	int i = 0;
-	t_token *cursor = env_list;
+	int		i;
+	int		name_len;
+	char	*new_entry;
 
-	env_array = malloc((ft_lstsize_token(env_list) + 1) * sizeof(char *));
-	if (!env_array)
-	{
-		perror("convert_env_to_array: malloc failed");
-		return (NULL);
-	}
-	while (cursor)
-	{
-		env_array[i] = ft_strdup(cursor->character);
-		if (!env_array[i])
-		{
-			perror("convert_env_to_array: malloc failed");
-			free_array(env_array);
-			return (NULL);
-		}
-		cursor = cursor->next;
-		i++;
-	}
-	env_array[i] = NULL;
-	return (env_array);
-}
-
-void update_env(char *name, char *value, t_token **env_list)
-{
-	t_token *cursor = *env_list;
-	char *new_entry;
-	int name_len = ft_strlen(name);
-
+	name_len = ft_strlen(name);
 	new_entry = malloc(name_len + ft_strlen(value) + 2);
 	if (!new_entry)
 	{
 		perror("update_env: malloc failed");
-		return;
+		return ;
 	}
 	ft_strlcpy(new_entry, name, name_len + 1);
 	ft_strlcat(new_entry, "=", name_len + 2);
 	ft_strlcat(new_entry, value, name_len + ft_strlen(value) + 2);
-	while (cursor)
+	i = 0;
+	while (envp[i])
 	{
-		if (ft_strncmp(cursor->character, name, name_len) == 0 && cursor->character[name_len] == '=')
+		if (ft_strncmp(envp[i], name, name_len) == 0 && envp[i][name_len] == '=')
 		{
-			free(cursor->character);
-			cursor->character = new_entry;
-			return;
+			update_env_replace(envp, i, new_entry);
+			return ;
 		}
-		cursor = cursor->next;
+		i++;
 	}
-	t_token *new_node = ft_lstnew_token(new_entry, T_ENV);
-	if (!new_node)
-	{
-		free(new_entry);
-		perror("update_env: malloc failed");
-		return;
-	}
-	ft_lstadd_back_token(env_list, new_node);
+	update_env_add(envp, i, new_entry);
 }
 
-void free_env_list(t_token **env_list)
+void	update_env_replace(char **envp, int index, char *new_entry)
 {
-	ft_lstclear_token(env_list);
+	if (envp[index])
+	{
+		free(envp[index]);
+	}
+	envp[index] = new_entry;
+}
+
+void	update_env_add(char **envp, int i, char *new_entry)
+{
+	envp[i] = new_entry;
+	envp[i + 1] = NULL;
 }

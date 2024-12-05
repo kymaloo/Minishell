@@ -5,9 +5,12 @@ void	print_lst(t_data *data)
 	t_list		*cursor;
 
 	cursor = data->lst;
-	if (cursor == NULL)
+	if (!cursor)
+	{
+		printf("Token list is empty.\n");
 		return ;
-	while (cursor != NULL)
+	}
+	while (cursor)
 	{
 		printf("Character: %c  Token: %d\n", cursor->character, cursor->type);
 		cursor = cursor->next;

@@ -47,6 +47,7 @@ int display_env(char **envp)
     return (0);
 }
 
+
 char *ft_strcat(char *dest, const char *src)
 {
     size_t dest_len;

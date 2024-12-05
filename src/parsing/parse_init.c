@@ -17,6 +17,8 @@ int	parse(t_data *data)
 	return (status);
 }
 
+//Gestion des quotes
+
 int	parse_quote(t_data *data)
 {
 	int	status;
@@ -25,15 +27,23 @@ int	parse_quote(t_data *data)
 	status = quote_is_pair(data);
 	if (status == EXIT_FAILURE)
 		return (status);
-	stock_char_lst(data);
-	transform_char(data, T_DOUBLE_QUOTE);
-	transform_char(data, T_SIMPLE_QUOTE);
+	stock_str_in_lst(data, data->input);
+	transform_all_tokens_into_characters(data, T_DOUBLE_QUOTE);
+	transform_all_tokens_into_characters(data, T_SIMPLE_QUOTE);
 	check_dollar(data, T_DOUBLE_QUOTE, 0);
-	stock_string_token(data);
-	ft_lstclear(&data->lst);
-	print_lst_token(data);
+	expand(data);
 	ft_lstclear_token(&data->token);
 	return (status);
+}
+
+//Gestion des expands
+void	expand(t_data *data)
+{
+	stock_string_token(data, TOKEN);
+	ft_lstclear(&data->lst);
+	replace_expand(data, TOKEN); // Remplace tous les expands qui ne sont pas dans des doubles quotes
+	replace_expand_in_double_quote(data); // Remplace tous les expands qui sont dans des doubles quotes
+	print_lst_token(data, TOKEN);
 }
 
 void	free_input(t_data *data)

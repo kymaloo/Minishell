@@ -1,15 +1,13 @@
 
 #include "../../include/minishell.h"
 
-int builtin_exit(t_token *token)
+int builtin_exit(char **args)
 {
-    int exit_code = 0;
-    t_token *arg_token = token->next;
-    
-    if (arg_token && arg_token->character)
-    {
-        exit_code = ft_atoi(arg_token->character);
-    }
+    int exit_code;
+
+    exit_code = 0;
+    if (args[1])
+        exit_code = ft_atoi(args[1]);
     printf("exit\n");
     exit(exit_code);
 }

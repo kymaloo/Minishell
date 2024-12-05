@@ -1,20 +1,16 @@
 
 #include "../../include/minishell.h"
 
-void	print_command_info(t_token *tokens)
+void	print_command_info(t_command_node *node)
 {
-	t_token	*cursor;
+	int	i;
 
-	if (!tokens)
+	i = 0;
+	printf("Command: %s\n", node->cmd);
+	printf("Arguments:\n");
+	while (i < node->arg_count)
 	{
-		printf("No command found.\n");
-		return ;
-	}
-	printf("Command and Arguments:\n");
-	cursor = tokens;
-	while (cursor)
-	{
-		printf("Token: %s, Type: %d\n", cursor->character, cursor->type);
-		cursor = cursor->next;
+		printf("[%d]: %s\n", i, node->args[i]);
+		i++;
 	}
 }

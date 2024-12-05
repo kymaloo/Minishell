@@ -1,19 +1,23 @@
 #include "../include/minishell.h"
 
-void	stock_char_lst(t_data *data)
+//Stock une string, characteres par characteres avec son token correspondent 
+
+void	stock_str_in_lst(t_data *data, char *str)
 {
 	int			i;
 	t_list		*buffer;
 
 	i = 0;
 	data->lst = NULL;
-	while (data->input[i])
+	while (str[i])
 	{
-		buffer = ft_lstnew(data->input[i], token_for_symbol(data->input[i]));
+		buffer = ft_lstnew(str[i], token_for_symbol(str[i]));
 		ft_lstadd_back(&data->lst, buffer);
 		i++;
 	}
 }
+
+//Permet d'identifier le token du charactere
 
 int	token_for_symbol(char input)
 {
@@ -38,6 +42,8 @@ int	token_for_symbol(char input)
 		token = T_CHARACTER;
 	return (token);
 }
+
+//Check si les quotes son fermer
 
 int	quote_is_pair(t_data *data)
 {
@@ -83,7 +89,10 @@ int	simple_or_double(t_data *data, char type)
 	return (0);
 }
 
-void	transform_char(t_data *data, int token)
+//Token : permet de savoir sur quelle quote agir
+//Transform tous les tokens entre les quote en characters
+
+void	transform_all_tokens_into_characters(t_data *data, int token)
 {
 	t_list		*cursor;
 	int			cpt;

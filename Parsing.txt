@@ -32,5 +32,18 @@ A faire :
         - Prier
 
 
-minishell$ $USR$USER
-String: $USR$USER  Token: 5
+
+
+Regrouper "<>| "
+
+        - Check s'il y a plusieur symbole a la suite
+        - Si c'est des white space en garder que un
+        - Si plusieur |
+                - bash: syntax error near unexpected token `|'
+        - Si << est qu'il n'y a rien apres
+                - bash: syntax error near unexpected token `newline'
+        - Si >>
+                - bash: syntax error near unexpected token `newline'
+
+
+Gestion dollars dans les doubles quote

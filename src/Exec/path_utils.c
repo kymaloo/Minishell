@@ -21,8 +21,6 @@ char	*find_command_path(char *cmd, char *path_str)
 	int		i;
 
 	i = 0;
-	if (!cmd || !path_str)
-        return (NULL);
 	file_paths = ft_split(path_str, ':');
 	while (file_paths[i])
 	{

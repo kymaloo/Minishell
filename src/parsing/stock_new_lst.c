@@ -18,31 +18,38 @@ int	count_handle_quote(t_list *cursor, int type)
 	return (i);
 }
 
-void	stock_string_token(t_data *data)
+// Recupere les caracteres de la liste chainer "lst" pour les mettres dans une t_token en regrouper les cararteres en 5 categorie
+// - Les mots "T_WORD"
+// - Les expands "T_EXPAND"
+// - Les caracters entre simple quote "T_WORD_SIMPLE_QUOTE"
+// - Les caracters entre simple quote "T_WORD_DOUBLE_QUOTE"
+// - Les symboles "|<> " 
+
+void	stock_string_token(t_data *data, int identifier)
 {
 	t_list	*cursor;
 
-	data->token = NULL;
+	if (identifier == TOKEN)
+		data->token = NULL;
+	else
+		data->tmp = NULL;
 	cursor = data->lst;
 	while (cursor)
 	{
 		if (cursor->type == T_DOUBLE_QUOTE)
-			handle_and_store_token(data, &cursor, T_DOUBLE_QUOTE, \
-				T_WORD_DOUBLE_QUOTE);
+			handle_and_store_token(data, &cursor, T_DOUBLE_QUOTE, T_WORD_DOUBLE_QUOTE, identifier);
 		else if (cursor->type == T_SIMPLE_QUOTE)
-			handle_and_store_token(data, &cursor, T_SIMPLE_QUOTE, \
-				T_WORD_SIMPLE_QUOTE);
-		else if (cursor->type == T_DOLLAR && cursor->next \
-			&& cursor->next->type == T_CHARACTER)
-			handle_and_store_token(data, &cursor, T_DOLLAR, T_EXPAND);
+			handle_and_store_token(data, &cursor, T_SIMPLE_QUOTE, T_WORD_SIMPLE_QUOTE, identifier);
+		else if (cursor->type == T_DOLLAR && cursor->next && cursor->next->type == T_CHARACTER)
+			handle_and_store_token(data, &cursor, T_DOLLAR, T_EXPAND, identifier);
 		else if (cursor->type == T_CHARACTER)
-			handle_and_store_token(data, &cursor, T_CHARACTER, T_WORD);
+			handle_and_store_token(data, &cursor, T_CHARACTER, T_WORD, identifier);
 		else
-			handle_symbol_token(data, &cursor);
+			handle_symbol_token(data, &cursor, identifier);
 	}
 }
 
-void	handle_symbol_token(t_data *data, t_list **cursor)
+void	handle_symbol_token(t_data *data, t_list **cursor, int identifier)
 {
 	char	tmp[2];
 	t_token	*buffer;
@@ -56,11 +63,14 @@ void	handle_symbol_token(t_data *data, t_list **cursor)
 		data->str_stock_lst = NULL;
 		return ;
 	}
-	ft_lstadd_back_token(&data->token, buffer);
+	if (identifier == TOKEN)
+		ft_lstadd_back_token(&data->token, buffer);
+	else
+		ft_lstadd_back_token(&data->tmp, buffer);
 	*cursor = (*cursor)->next;
 }
 
-void	handle_and_store_token(t_data *data, t_list **cursor, int type, int tk)
+void	handle_and_store_token(t_data *data, t_list **cursor, int type, int tk, int identifier)
 {
 	t_token	*buffer;
 
@@ -79,7 +89,10 @@ void	handle_and_store_token(t_data *data, t_list **cursor, int type, int tk)
 		data->str_stock_lst = NULL;
 		return ;
 	}
-	ft_lstadd_back_token(&data->token, buffer);
+	if (identifier == TOKEN)
+		ft_lstadd_back_token(&data->token, buffer);
+	else
+		ft_lstadd_back_token(&data->tmp, buffer);
 	free(data->str_stock_lst);
 	data->str_stock_lst = NULL;
 }
