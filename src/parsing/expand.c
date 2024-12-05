@@ -17,13 +17,14 @@ char	*recup_expand(t_data *data, int identifier)
 	{
 		if (cursor->type == T_EXPAND)
 		{
-			result = malloc(sizeof(char) * ft_strlen(cursor->character));
+			result = malloc(sizeof(char) * ft_strlen(cursor->character) + 1);
 			while (cursor->character[j])
 			{
 				result[i] = cursor->character[j];
 				i++;
 				j++;
 			}
+			result[i++] = '=';
 			result[i] = '\0';
 			return (result);
 		}
@@ -48,21 +49,15 @@ char	*recup_var_env(t_data *data, int identifier)
 	else
 		result = recup_expand(data, TMP);
 	while(data->env_copy[i] && strncmp(result, data->env_copy[i], ft_strlen(result)) != 0)
-	{
 		i++;
-	}
 	if (data->env_copy[i] == NULL)
 		return (NULL);
-	j = ft_strlen(result) + 1;
+	j = ft_strlen(result);
 	tmp = ft_strlen(&data->env_copy[i][j]);
 	free(result);
 	result = malloc(sizeof(char) * tmp + 1);
 	while (data->env_copy[i][j])
-	{
-		result[k] = data->env_copy[i][j];
-		j++;
-		k++;
-	}
+		result[k++] = data->env_copy[i][j++];
 	result[k] = '\0';
 	return (result);
 }
@@ -86,7 +81,7 @@ void	replace_expand(t_data *data, int identifier)
 			if (result == NULL)
 			{
 				free(result);
-				//Free node
+				//freeNode(&cursor, cursor);
 				return ;
 			}
 			free(cursor->character);
@@ -114,4 +109,28 @@ int check_dollar_in_double_quote(char *str)
 		i++;
 	}
 	return (1);
+}
+
+void	freeNode(t_token** head, t_token* target)
+{
+	t_token	*current;
+
+    if (head == NULL || *head == NULL || target == NULL)
+        return;
+    if (*head == target)
+	{
+        *head = target->next;
+		free(target->character);
+        free(target);
+        return ;
+    }
+	current = *head;
+    while (current != NULL && current->next != target)
+        current = current->next;
+    if (current != NULL)
+	{
+        current->next = target->next;
+		free(target->character);
+        free(target);
+    }
 }
