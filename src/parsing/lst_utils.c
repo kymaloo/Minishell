@@ -12,7 +12,8 @@ void	print_lst(t_data *data)
 	}
 	while (cursor)
 	{
-		printf("Character: %c  Token: %d\n", cursor->character, cursor->type);
+		if (cursor && cursor->character)
+			printf("Character: %c  Token: %d\n", cursor->character, cursor->type);
 		cursor = cursor->next;
 	}
 	printf("\n");

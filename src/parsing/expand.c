@@ -80,12 +80,16 @@ void	replace_expand(t_data *data, int identifier)
 			result = recup_var_env(data, identifier);
 			if (result == NULL)
 			{
+				if (identifier == TOKEN)
+					free_node_token(&data->token, cursor);
+				else
+					free_node_token(&data->tmp, cursor);
 				free(result);
-				//freeNode(&cursor, cursor);
 				return ;
 			}
 			free(cursor->character);
 			cursor->character = ft_strdup(result);
+			data->expand = ft_strdup(result);
 			free(result);
 			cursor->type = T_WORD;
 		}
@@ -111,26 +115,37 @@ int check_dollar_in_double_quote(char *str)
 	return (1);
 }
 
-void	freeNode(t_token** head, t_token* target)
+void	free_node_token(t_token** head, t_token* target)
 {
 	t_token	*current;
+	t_token	*tmp;
 
     if (head == NULL || *head == NULL || target == NULL)
-        return;
-    if (*head == target)
 	{
-        *head = target->next;
-		free(target->character);
-        free(target);
         return ;
-    }
+	}
 	current = *head;
-    while (current != NULL && current->next != target)
-        current = current->next;
-    if (current != NULL)
+    if (current == target)
 	{
-        current->next = target->next;
+		free((*head)->character);
+        free(*head);
+		*head = NULL;
+		return ;
+	}	
+    while (current != NULL && current != target)
+    {
+		tmp = current;
+	    current = current->next;
+	}
+    if (current)
+	{
+		if (!current->next)
+			tmp->next = NULL;
+		else
+			tmp->next = current->next;
 		free(target->character);
+		target->character = NULL;
         free(target);
+		target = NULL;
     }
 }

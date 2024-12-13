@@ -28,10 +28,14 @@ int	parse_quote(t_data *data)
 	if (status == EXIT_FAILURE)
 		return (status);
 	stock_str_in_lst(data, data->input);
+	//delete_two_quote_consecutiv(data->lst, T_SIMPLE_QUOTE);
+	//delete_two_quote_consecutiv(data->lst, T_DOUBLE_QUOTE);
 	transform_all_tokens_into_characters(data, T_DOUBLE_QUOTE);
 	transform_all_tokens_into_characters(data, T_SIMPLE_QUOTE);
 	check_dollar(data, T_DOUBLE_QUOTE, 0);
+	//print_lst(data);
 	expand(data);
+	//print_lst_token(data, TOKEN);
 	ft_lstclear_token(&data->token);
 	return (status);
 }
@@ -41,8 +45,12 @@ void	expand(t_data *data)
 {
 	stock_string_token(data, TOKEN);
 	ft_lstclear(&data->lst);
+	detete_dollars_before_quote(data, T_DOUBLE_QUOTE);
 	replace_expand(data, TOKEN); // Remplace tous les expands qui ne sont pas dans des doubles quotes
 	replace_expand_in_double_quote(data); // Remplace tous les expands qui sont dans des doubles quotes
+	//print_lst_token(data, TOKEN);
+	//printf("%d\n", count_regroup_symbole(data->token, T_BROKET_LEFT));
+	//regroup_symbole(data->token, '<', T_BROKET_LEFT);
 	print_lst_token(data, TOKEN);
 }
 
