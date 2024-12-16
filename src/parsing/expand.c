@@ -62,41 +62,86 @@ char	*recup_var_env(t_data *data, int identifier)
 	return (result);
 }
 
-void	replace_expand(t_data *data, int identifier)
+void replace_expand(t_data *data, int identifier)
 {
-	t_token	*cursor;
-	char	*result;
-	int		i;
+    t_token *cursor;
 
-	if (identifier == TOKEN)
-		cursor = data->token;
-	else
-		cursor = data->tmp;
-	i = 0;
-	while (cursor)
-	{
-		if (cursor->type == T_EXPAND)
-		{
-			result = recup_var_env(data, identifier);
-			if (result == NULL)
-			{
-				if (identifier == TOKEN)
-					free_node_token(&data->token, cursor);
-				else
-					free_node_token(&data->tmp, cursor);
-				free(result);
-				return ;
-			}
-			free(cursor->character);
-			cursor->character = ft_strdup(result);
-			data->expand = ft_strdup(result);
-			free(result);
-			cursor->type = T_WORD;
-		}
-		i++;
-		cursor = cursor->next;
-	}
+    if (identifier == TOKEN)
+        cursor = data->token;
+    else
+        cursor = data->tmp;
+    while (cursor)
+    {
+        if (cursor->type == T_EXPAND)
+            process_expansion(data, identifier, cursor);
+        cursor = cursor->next;
+    }
 }
+
+void process_expansion(t_data *data, int identifier, t_token *cursor)
+{
+    char *result = recup_var_env(data, identifier);
+    if (result == NULL)
+    {
+        handle_expansion_failure(data, identifier, cursor);
+		data->expand = NULL;
+        return ;
+    }
+    update_token(cursor, result);
+	data->expand = ft_strdup(cursor->character);
+    free(result);
+}
+
+void handle_expansion_failure(t_data *data, int identifier, t_token *cursor)
+{
+    if (identifier == TOKEN)
+        free_node_token(&data->token, cursor);
+    else
+        free_node_token(&data->tmp, cursor);
+}
+
+void update_token(t_token *cursor, char *result)
+{
+    free(cursor->character);
+    cursor->character = ft_strdup(result);
+    cursor->type = T_WORD;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int check_dollar_in_double_quote(char *str)
 {

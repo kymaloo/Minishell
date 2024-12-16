@@ -4,23 +4,24 @@ void	replace_expand_in_double_quote(t_data *data)
 {
     t_token *cursor;
 	char	*str;
-	int		i;
-	int		count;
+	// int		i;
+	// int		count;
 
-	i = 0;
+	// i = 0;
 	cursor = data->token;
     while (cursor)
     {
         if (cursor->type == T_WORD_DOUBLE_QUOTE)
         {
+			//printf("%s\n", cursor->character);
 			str = extract_content_between_quotes(cursor->character);
-			count = count_number_expand_in_double_quote(str);
-			while (i != count)
-			{
+		//	printf("%s\n", str);
+			// count = count_number_expand_in_double_quote(str);
+			// while (i != count)
+			// {
             	handle_double_quote(cursor, data);
-				i++;
-			}
-			//boucle pour verifier s'il y a encore un expand
+			// 	i++;
+			// }
         }
         cursor = cursor->next;
     }
@@ -33,22 +34,21 @@ void	handle_double_quote(t_token *cursor, t_data *data)
 
     if (check_dollar_in_double_quote(cursor->character) == 0)
     {
-		str = extract_content_between_quotes(cursor->character);
-		stock_string_before_expand(str);
-		expand = stock_string_between_expand(str);
-		stock_string_after_expand(str);
+		str = extract_content_between_quotes(cursor->character); // Entrer : "'$USER'" str = '$USER'
+		expand = stock_string_between_expand(str); // Entrer : '$USER' str = $USER
         stock_str_in_lst(data, expand);
 		free(expand);
         stock_string_token(data, TMP);
         ft_lstclear(&data->lst);
         replace_expand(data, TMP);
-		count_number_expand_in_double_quote(str);
 		the_string_length_in_the_double_quote_with_expand_change(data, str);
 		expand = regroup_str_in_the_double_quote_with_expand_change(data, str);
+		printf("%s\n", expand);
 		free(str);
         free(cursor->character);
 		cursor->character = ft_strdup(expand);
 		free(data->expand);
+		free(expand);
         ft_lstclear_tmp(&data->tmp);
     }
 }
