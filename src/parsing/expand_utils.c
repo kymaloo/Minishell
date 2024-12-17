@@ -3,39 +3,35 @@
 void	replace_expand_in_double_quote(t_data *data)
 {
     t_token *cursor;
-	char	*str;
-	// int		i;
-	// int		count;
+	int		i;
+	int		count;
 
-	// i = 0;
+	i = 0;
 	cursor = data->token;
     while (cursor)
     {
         if (cursor->type == T_WORD_DOUBLE_QUOTE)
         {
-			//printf("%s\n", cursor->character);
-			str = extract_content_between_quotes(cursor->character);
-		//	printf("%s\n", str);
-			// count = count_number_expand_in_double_quote(str);
-			// while (i != count)
-			// {
-            	handle_double_quote(cursor, data);
-			// 	i++;
-			// }
+			count = count_number_expand_in_double_quote(cursor->character);
+			while (i != count)
+			{
+				handle_double_quote(&data->token, cursor, data);
+				i++;
+			}
         }
         cursor = cursor->next;
     }
 }
 
-void	handle_double_quote(t_token *cursor, t_data *data)
+void	handle_double_quote(t_token **head, t_token *cursor, t_data *data)
 {
 	char *str;
 	char *expand;
 
     if (check_dollar_in_double_quote(cursor->character) == 0)
     {
-		str = extract_content_between_quotes(cursor->character); // Entrer : "'$USER'" str = '$USER'
-		expand = stock_string_between_expand(str); // Entrer : '$USER' str = $USER
+		str = extract_content_between_quotes(cursor->character);
+		expand = stock_string_between_expand(str);
         stock_str_in_lst(data, expand);
 		free(expand);
         stock_string_token(data, TMP);
@@ -43,12 +39,16 @@ void	handle_double_quote(t_token *cursor, t_data *data)
         replace_expand(data, TMP);
 		the_string_length_in_the_double_quote_with_expand_change(data, str);
 		expand = regroup_str_in_the_double_quote_with_expand_change(data, str);
-		printf("%s\n", expand);
 		free(str);
+		if (expand == NULL)
+		{
+			free_node_token(head, cursor);
+			return ;
+		}
         free(cursor->character);
 		cursor->character = ft_strdup(expand);
-		free(data->expand);
 		free(expand);
+		free(data->expand);
         ft_lstclear_tmp(&data->tmp);
     }
 }
@@ -69,7 +69,7 @@ char	*extract_content_between_quotes(char *str)
         j++;
     }
     result[i] = '\0';
-    return result;
+    return (result);
 }
 
 int	count_all_character_lst(t_data *data)
@@ -120,4 +120,3 @@ char	*stock_all_character_lst(t_data *data)
 	result[j] = '\0';
 	return (result);
 }
-

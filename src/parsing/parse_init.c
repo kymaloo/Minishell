@@ -28,6 +28,10 @@ int	parse_quote(t_data *data)
 	if (status == EXIT_FAILURE)
 		return (status);
 	stock_str_in_lst(data, data->input);
+	//print_lst(data);
+	//delete_all_consecutive(data, T_DOUBLE_QUOTE);
+	//delete_all_consecutive(data, T_SIMPLE_QUOTE);
+	print_lst(data);
 	transform_all_tokens_into_characters(data, T_DOUBLE_QUOTE);
 	transform_all_tokens_into_characters(data, T_SIMPLE_QUOTE);
 	check_dollar(data, T_DOUBLE_QUOTE, 0);
@@ -41,6 +45,7 @@ void	expand(t_data *data)
 {
 	stock_string_token(data, TOKEN);
 	ft_lstclear(&data->lst);
+	detete_dollars_before_quote(data, T_WORD_DOUBLE_QUOTE);
 	replace_expand(data, TOKEN);
 	replace_expand_in_double_quote(data);
 	//print_lst_token(data, TOKEN);

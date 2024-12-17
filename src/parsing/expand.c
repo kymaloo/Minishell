@@ -160,23 +160,28 @@ int check_dollar_in_double_quote(char *str)
 	return (1);
 }
 
-void	free_node_token(t_token** head, t_token* target)
+void	free_node_token(t_token **head, t_token *target)
 {
 	t_token	*current;
 	t_token	*tmp;
 
     if (head == NULL || *head == NULL || target == NULL)
-	{
-        return ;
-	}
+		return ;
 	current = *head;
-    if (current == target)
+    if (current == target && current->next == NULL)
 	{
 		free((*head)->character);
         free(*head);
 		*head = NULL;
 		return ;
-	}	
+	}
+	if (current == target)
+	{
+		free((*head)->character);
+        free(*head);
+		*head = current->next;
+		return ;
+	}
     while (current != NULL && current != target)
     {
 		tmp = current;
