@@ -1,40 +1,39 @@
 #include "../include/minishell.h"
 
-void	free_node_lst(t_list** head, t_list* target)
+void	free_node_lst(t_list **head, t_list *target)
 {
-	t_list	*current;
-	t_list	*tmp;
+    t_list *current;
+    t_list *tmp;
 
     if (head == NULL || *head == NULL || target == NULL)
-	{
-        return ;
-	}
-	current = *head;
+		return ;
+    current = *head;
     if (current == target && current->next == NULL)
-	{
+    {
         free(*head);
-		*head = NULL;
+        *head = NULL;
+        return;
+    }
+    if (current == target)
+    {
+        *head = current->next;
+        free(target);
 		return ;
-	}
-	if (current == target)
-	{
-        free(*head);
-		*head = current->next;
-		return ;
-	}
+    }
     while (current != NULL && current != target)
     {
-		tmp = current;
-	    current = current->next;
-	}
+        tmp = current;
+        current = current->next;
+    }
     if (current)
-	{
-		if (!current->next)
-			tmp->next = NULL;
-		else
-			tmp->next = current->next;
+    {
+        if (!current->next)
+            tmp->next = NULL;
+        else
+            tmp->next = current->next;
+
         free(target);
-		target = NULL;
+        target = NULL;
     }
 }
 
@@ -351,23 +350,132 @@ void	detete_dollars_before_quote(t_data *data, int type)
 	}	
 }
 
-// void	delete_all_consecutive(t_data *data, int type)
-// {
-// 	t_list	*cursor;
-// 	t_list	**head;
+void	delete_all_consecutive(t_data *data, int type)
+{
+    t_list *cursor;
+	t_list *tmp;
+    t_list **head;
 
-// 	cursor = data->lst;
-// 	head = &data->lst;
-// 	while (cursor)
-// 	{
-// 		if (cursor->type == type)
-// 		{
-// 			if (cursor->next)
-// 			//{
-// 				//free_node_lst(head, cursor);
-// 			//}
-// 				puts("test");
-// 		}
-// 		cursor = cursor->next;
-// 	}	
-// }
+    cursor = data->lst;
+    head = &data->lst;
+    while (cursor && cursor->next)
+    {
+        if (cursor->type == type && cursor->next->type == type)
+        {
+			tmp = cursor->next;
+            free_node_lst(head, cursor);
+            free_node_lst(head, tmp);
+            cursor = *head;
+        }
+		else
+        	cursor = cursor->next;
+    }
+}
+
+void	merge_token(t_data *data, int type1, int type2)
+{
+	t_token	*cursor;
+	t_token	*tmp;
+	t_token	**head;
+	char	*str1;
+	char	*str2;
+	char	*result;
+
+	cursor = data->token;
+	head = &data->token;
+	while (cursor && cursor->next)
+	{
+		if (cursor->type == type1 && cursor->next->type == type2)
+		{
+			str1 = stock_merge_token(cursor->character, type1);
+			str2 = stock_merge_token(cursor->next->character, type2);
+			result = strdup_cat(str1, str2);
+			//printf("%s\n", result);
+			free(str1);
+			free(str2);
+			cursor->next->character = result;
+			cursor->next->type = T_WORD_MERGE;
+			//free(result);
+            //*head = cursor;
+			tmp = cursor;
+            cursor = cursor->next;
+            free_node_token(head, tmp);
+		}
+		else
+			cursor = cursor->next;
+	}
+}
+
+int	len_merge_token(char *str1, char *str2, int type1, int type2)
+{
+	int	i;
+	int	j;
+	int	result;
+
+	i = ft_strlen(str1);
+	j = ft_strlen(str2);
+	if (type1 == T_WORD_SIMPLE_QUOTE || type1 == T_WORD_DOUBLE_QUOTE)
+		i = i - 2;
+	if (type2 == T_WORD_SIMPLE_QUOTE || type2 == T_WORD_DOUBLE_QUOTE)
+		j = j - 2;
+	result = i + j;
+	return (result);
+}
+
+char	*stock_merge_token(char *str, int type)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*result;
+
+	if (type == T_WORD_SIMPLE_QUOTE || type == T_WORD_DOUBLE_QUOTE)
+	{
+		len = ft_strlen(str) - 2;
+		i = 1;
+	}
+	else
+	{
+		len = ft_strlen(str);
+		i = 0;
+	}
+	result = malloc(sizeof(char) * len + 1);
+	if (!result)
+	{
+		free(str);
+		return (NULL);
+	}
+	j = 0;
+	while (j != len)
+		result[j++] = str[i++];
+	result[j] = '\0';
+	printf("%s\n", result);
+	return (result);
+}
+
+char	*strdup_cat(char *str1, char *str2)
+{
+	char	*result;
+	int		i;
+	int		j;
+
+	i = ft_strlen(str1) + ft_strlen(str2);
+	result = malloc(sizeof(char) * i + 1);
+	if (!result)
+	{
+		free(str1);
+		free(str2);
+		return (NULL);
+	}
+	i = 0;
+	j = 0;
+	while (str1[i])
+		result[j++] = str1[i++];
+	i = 0;
+	while (str2[i])
+		result[j++] = str2[i++];
+	result[j] = '\0';
+	printf("%s\n", result);
+	return (result);
+}
+

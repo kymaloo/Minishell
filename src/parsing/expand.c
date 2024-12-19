@@ -87,7 +87,7 @@ void process_expansion(t_data *data, int identifier, t_token *cursor)
 		data->expand = NULL;
         return ;
     }
-    update_token(cursor, result);
+    update_token(cursor, TOKEN, result);
 	data->expand = ft_strdup(cursor->character);
     free(result);
 }
@@ -100,48 +100,44 @@ void handle_expansion_failure(t_data *data, int identifier, t_token *cursor)
         free_node_token(&data->tmp, cursor);
 }
 
-void update_token(t_token *cursor, char *result)
+void update_token(t_token *cursor, int identifier, char *result)
 {
     free(cursor->character);
-    cursor->character = ft_strdup(result);
+	if (identifier == TOKEN && ft_isalnum(result[0]) == 0)
+	 	cursor->character  = check_white_space_expand_in_double_quote(result);
+	else
+    	cursor->character = ft_strdup(result);
     cursor->type = T_WORD;
 }
 
+char	*check_white_space_expand_in_double_quote(char *str)
+{
+	int		len;
+	int		i;
+	int		j;
+	char	*result;
 
+	len = ft_strlen(str);
+	i = 0;
+	if (ft_isalnum(str[0]) != 0)
+		return (str);
+	while (ft_isalnum(str[i]) == 0)
+		i++;
+	j = i;
+	i = len - i;
+	result = malloc(sizeof(char) * i + 1);
+	if (!result)
+	{
+		free(str);
+		return (NULL);
+	}
+	i = 0;
+	while (str[j])
+		result[i++] = str[j++];
+	result[i] = '\0';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	return (result);
+}
 
 int check_dollar_in_double_quote(char *str)
 {
